@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += Vector3.up * speed * Time.deltaTime;
+            transform.position += Vector3.left * speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Vector3.left * speed * Time.deltaTime;
+            transform.position += Vector3.up * speed * Time.deltaTime;
         }
 
     }

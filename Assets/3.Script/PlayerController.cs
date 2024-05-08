@@ -1,13 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
+    Vector3 moveTarget;
+
+    public UI_HotBar hotBar;
+
+    private void Start()
+    {
+        moveTarget = transform.position;
+        hotBar = Util.FindChild(gameObject,"UI_HotBar").GetComponent<UI_HotBar>();
+    }
     void Update()
     {
-        Move();   
+        Move();
     }
 
     void Move()
@@ -28,6 +36,5 @@ public class PlayerController : MonoBehaviour
         {
             transform.position += Vector3.up * speed * Time.deltaTime;
         }
-
     }
 }

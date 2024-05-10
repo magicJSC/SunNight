@@ -1,116 +1,128 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_HotBar : UI_Base
 {
-    public ItemInfo[] itemInfo;
-    GameObject[] keys = new GameObject[5];
-
-    public class ItemInfo
-    {
-        public int id;
-        public int count;
-        public Define.ItemType itemType;
-
-        public ItemInfo(int a,int b,Define.ItemType c)
-        {
-            id = a; 
-            count = b;
-            itemType = c;
-        }
-    }
-
-    enum Keys
-    {
-        key1,
-        key2,
-        key3,
-        key4,
-        key5,
-    }
+    List<GameObject> keys = new List<GameObject>();
 
     public override void Init()
     {
-        Bind<GameObject>(typeof(Keys));
-        keys[0] = Get<GameObject>((int)Keys.key1);
-        keys[1] = Get<GameObject>((int)Keys.key2);
-        keys[2] = Get<GameObject>((int)Keys.key3);
-        keys[3] = Get<GameObject>((int)Keys.key4);
-        keys[4] = Get<GameObject>((int)Keys.key5);
-
+        Managers.Game.hotBar = this;
+        for(int i = 0;i<5;i++)
+        {
+            GameObject go = Instantiate(Resources.Load<GameObject>("UI/Hotbar/Key"),transform.GetChild(0));
+            keys.Add(go);
+            keys[i].GetComponent<UI_HotBar_Key>().Init_Key();
+            keys[i].GetComponent<UI_HotBar_Key>().choice.SetActive(false);
+        }
+        keys[keys.Count -1].GetComponent<Image>().color = Color.yellow;
+        keys[Managers.Game.hotBar_choice].GetComponent<UI_HotBar_Key>().choice.SetActive(true);
         Getinfo();
         SetKeys();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeChoice(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeChoice(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ChangeChoice(2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            ChangeChoice(3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            ChangeChoice(4);
+        }
+    }
+
+    void ChangeChoice(int change)
+    {
+        keys[Managers.Game.HotBar_Choice].GetComponent<UI_HotBar_Key>().UnChoice();
+        Managers.Game.HotBar_Choice = change;
+        keys[Managers.Game.HotBar_Choice].GetComponent<UI_HotBar_Key>().Choice();
+    }
+
+    #region 핫바 값관련
     //값 가져오기
     void Getinfo()
     {
-        int a =10;
-        itemInfo = new ItemInfo[a];
-        itemInfo[0] = new ItemInfo(1, 99,Define.ItemType.Material);
+        int a =5;
+        Managers.Game.hotBar_itemInfo = new GameManager.ItemInfo[a];
+        Managers.Game.hotBar_itemInfo[0] = new GameManager.ItemInfo(3,10);
         for(int i = 1; i < a; i++)
         {
-            itemInfo[i] = new ItemInfo(0, 0, Define.ItemType.None);
+            Managers.Game.hotBar_itemInfo[i] = new GameManager.ItemInfo(0,0);
         }
     }
 
     //핫바에 정보 보여주기
-   void SetKeys()
+   public void SetKeys()
     {
-        for(int i = 0;i<keys.Length;i++)
+        for(int i = 0;i<keys.Count;i++)
         {
-            keys[i].GetComponent<UI_HotBar_Key>().SetIcon(itemInfo[i].id, itemInfo[i].count, itemInfo[i].itemType);
+            keys[i].GetComponent<UI_HotBar_Key>().SetIcon(Managers.Game.hotBar_itemInfo[i].id, Managers.Game.hotBar_itemInfo[i].count);
         }
     }
 
+    //얻은 아이템 데이터 넣어주기
     public void AddItem(int a,Define.ItemType itemType)
     {
 
-        if (itemType == Define.ItemType.Material)
+        if (itemType != Define.ItemType.Tool)   //재료 아이템일때
         {
-            int cand = -1;
-            for (int i = 0; i < keys.Length-1; i++)
+            bool added = false;
+            int empty = -1;
+            for (int i = 0; i < keys.Count-1; i++)
             {
-                if (a == itemInfo[i].id && itemInfo[i].count < 99)
+                if (a == Managers.Game.hotBar_itemInfo[i].id && Managers.Game.hotBar_itemInfo[i].count < 99)
                 {
-                    itemInfo[i].count++;
-                    cand = -1;
+                    Managers.Game.hotBar_itemInfo[i].count++;
+                    added = true;
                     break;
                 }
                 else
                 {
-                    if (itemInfo[i].id == 0 && cand < 0)
-                     cand = i;
+                    if(empty == -1 && Managers.Game.hotBar_itemInfo[i].id == 0)
+                        empty = i;
                 }
             }
-
-            if(cand >= 0)
+            //추가 하지 못했다면 비어있는 칸에 넣기
+            if(!added)
             {
-                itemInfo[cand].id = a;
-                itemInfo[cand].count++;
-                itemInfo[cand].itemType = itemType;
-            }
-            else
-            {
-                // 인벤토리로 이동
+                Managers.Game.hotBar_itemInfo[empty].id = a;
+                Managers.Game.hotBar_itemInfo[empty].count++;
             }
         }
-        else if(itemType == Define.ItemType.Tool)
+        else //도구 아이템일때
         {
-            for (int i = 0; i < keys.Length-1; i++)
+            for (int i = 0; i < keys.Count-1; i++)
             {
-                if (0 == itemInfo[i].id)
+                if (0 == Managers.Game.hotBar_itemInfo[i].id)
                 {
-                    itemInfo[i].id = a;
-                    itemInfo[i].itemType = itemType;
+                    Managers.Game.hotBar_itemInfo[i].id = a;
+                    Managers.Game.hotBar_itemInfo[i].itemType = itemType;
                     break;
                 }
             }
         }
         SetKeys();
     }
+    #endregion
+
+
 }

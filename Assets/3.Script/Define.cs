@@ -31,6 +31,7 @@ public class Define : MonoBehaviour
         Tool,           // 장비
         Material,       // 재료
         Food,           // 음식
+        Building,        // 건축
         Etc,            // 기타
     }
 }

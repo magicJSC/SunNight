@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
-    public static Managers Instance { get { return instance; } }
     static Managers instance;
+    public static Managers Instance { get { Init(); return instance; } }
 
     #region Contents
     GameManager _game = new GameManager();
+    ObjectMananger _obj = new ObjectMananger();
+    NetworkManager _network = new NetworkManager();
 
-    public static GameManager Game { get { return instance._game; } }
+    public static ObjectMananger Object { get { return Instance._obj; } }
+    public static NetworkManager Network { get { return Instance._network; } }
+    public static GameManager Game { get { return Instance._game; } }
     #endregion
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

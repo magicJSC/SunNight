@@ -5,15 +5,17 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     bool canMove = false;
+    LayerMask playerLayer;
 
     private void Start()
     {
         Managers.Game.tower = this;
+        playerLayer.value = 6;
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F) && canMove)
+        if (Input.GetKeyDown(KeyCode.F) && canMove)
         {
             Managers.Game.hotBar.GetTower();
         }
@@ -21,7 +23,7 @@ public class Tower : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == playerLayer)
         {
             canMove = true;
         }
@@ -29,9 +31,9 @@ public class Tower : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == playerLayer)
         {
-            canMove=false;
+            canMove = false;
         }
     }
 }

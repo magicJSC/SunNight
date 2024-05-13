@@ -115,7 +115,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,5 +145,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: -1320776664, guid: 7053e0bd654df554fb094262af7aa75e, type: 3}
   id: 3
-  type: 5
+  itemType: 0
   tile: {fileID: 11400000, guid: 1d642f2b034d0bc4ba5f979f8443b431, type: 2}

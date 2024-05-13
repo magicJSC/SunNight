@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,23 +39,26 @@ public class UI_HotBar_Key : UI_Base
 
     }
 
-    public void SetIcon(int id,int count)
+    public void SetIcon(int index)
     {
-
-        if(id == 0)
+        GameManager.HotBarInfo hotBar = Managers.Game.hotBar_itemInfo[index];
+        if(hotBar.itemType == Define.ItemType.Tower)
         {
-            icons.gameObject.SetActive(false);
-            text.gameObject.SetActive(false);
+            SetTowerIcon();
             return;
         }
-        Item item = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>();
 
+        if (hotBar.keyType == Define.KeyType.Empty)
+        {
+            EmptyKey(index);
+            return;
+        }
         icons.gameObject.SetActive(true);
-        if(item.type != Define.ItemType.Tool)
+        if(hotBar.itemType != Define.ItemType.Tool && hotBar.itemType != Define.ItemType.Tower)
              text.gameObject.SetActive(true);
-        icons.sprite = item.itemIcon;
+        icons.sprite = hotBar.icon;
 
-        text.text = count.ToString();
+        text.text = hotBar.count.ToString();
     }
 
     public void Choice()
@@ -65,5 +69,24 @@ public class UI_HotBar_Key : UI_Base
     public void UnChoice()
     {
         choice.gameObject.SetActive(false);
+    }
+
+    public void EmptyKey(int index)  //키 비어있게 만들기
+    {
+        icons.gameObject.SetActive(false);
+        text.gameObject.SetActive(false);
+        Managers.Game.hotBar_itemInfo[index].keyType = Define.KeyType.Empty;
+    }
+
+    public void SetTowerIcon()
+    {
+        if (Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Empty)
+        {
+            icons.gameObject.SetActive(false);
+            text.gameObject.SetActive(false);
+            return;
+        }
+        icons.gameObject.SetActive(true);
+        icons.sprite = Managers.Game.tower.GetComponent<SpriteRenderer>().sprite;
     }
 }

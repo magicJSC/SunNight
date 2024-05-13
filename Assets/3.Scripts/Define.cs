@@ -32,6 +32,13 @@ public class Define : MonoBehaviour
         Material,       // 재료
         Food,           // 음식
         Building,        // 건축
+        Tower,
         Etc,            // 기타
+    }
+
+    public enum KeyType
+    {
+        Empty,
+        Exist
     }
 }

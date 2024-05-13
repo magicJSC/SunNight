@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviour
     {
         string host = Dns.GetHostName();
         IPHostEntry ipHost = Dns.GetHostEntry(host);
-        IPAddress ipAddr = ipHost.AddressList[0];
+        IPAddress ipAddr = ipHost.AddressList[1];
         IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 7777);
 
         _connector.Connect(ipEndPoint,

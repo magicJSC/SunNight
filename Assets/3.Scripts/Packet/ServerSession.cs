@@ -24,10 +24,10 @@ public class ServerSession : PacketSession
 
     public override void OnRecvPacket(ArraySegment<byte> buffer)
     {
-        S_CHAT pkt = new S_CHAT();
+        C_CHAT pkt = new C_CHAT();
         pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
 
-        PacketHandler.S_ChatHandler(this, pkt);
+        PacketHandler.SChatHandler(this, pkt);
     }
 
     public override void OnSend(int numOfBytes)

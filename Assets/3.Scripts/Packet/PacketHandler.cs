@@ -8,7 +8,7 @@ class PacketHandler
 {
     public static void SChatHandler(PacketSession session, IMessage packet)
     {
-        S_CHAT chatPacket = packet as S_CHAT;
+        C_CHAT chatPacket = packet as C_CHAT;
         ServerSession serverSession = session as ServerSession;
 
         Debug.Log(chatPacket.Msg);

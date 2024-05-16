@@ -17,7 +17,7 @@ public class Managers : MonoBehaviour
     public static GameManager Game { get { return Instance._game; } }
     #endregion
 
-    void Awake()
+    void Start()
     {
         Init();
     }

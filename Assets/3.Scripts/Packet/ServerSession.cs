@@ -24,7 +24,7 @@ public class ServerSession : PacketSession
 
     public override void OnRecvPacket(ArraySegment<byte> buffer)
     {
-        C_CHAT pkt = new C_CHAT();
+        S_CHAT pkt = new S_CHAT();
         pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
 
         PacketHandler.SChatHandler(this, pkt);

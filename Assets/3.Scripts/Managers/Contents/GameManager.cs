@@ -58,11 +58,11 @@ public class GameManager : MonoBehaviour
         select.info = hotBar_itemInfo[HotBar_Choice];
         if (hotBar_itemInfo[HotBar_Choice].itemType == Define.ItemType.Building && hotBar_itemInfo[HotBar_Choice].keyType == Define.KeyType.Exist)
         {
-            select.sample.gameObject.SetActive(true);
+            select.sample.SetActive(true);
             select.sample.GetComponent<SpriteRenderer>().sprite = hotBar_itemInfo[HotBar_Choice].icon;
         }
         else
-            select.sample.gameObject.SetActive(false);
+            select.sample.SetActive(false);
 
         //타워를 소장하고 있지만 선택하고 있지 않을때
         if (hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist && HotBar_Choice == hotBar_itemInfo.Length - 1)

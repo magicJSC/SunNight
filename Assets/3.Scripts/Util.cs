@@ -60,6 +60,9 @@ public static class Util
 
     public static string GetOriginalName(string name)
     {
+        if (!name.Contains('('))
+            return name;
+
         name = name.Substring(0,name.IndexOf('('));
         return name;
     }

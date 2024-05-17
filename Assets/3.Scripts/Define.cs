@@ -10,14 +10,7 @@ public class Define : MonoBehaviour
         Effect,
         MaxCount
     }
-    public enum Scene
-    {
-        Unknown,
-        GameScene,
-        LoginScene
-
-
-    }
+   
     public enum UIEvent
     {
         Click,
@@ -40,5 +33,13 @@ public class Define : MonoBehaviour
     {
         Empty,
         Exist
+    }
+
+    public enum State
+    {
+        Idle,
+        Move,
+        Attack,
+        Die
     }
 }

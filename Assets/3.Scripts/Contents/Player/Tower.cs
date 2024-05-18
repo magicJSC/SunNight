@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Tower : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Tower : MonoBehaviour
     private void Start()
     {
         Managers.Game.tower = this;
+        Managers.Game.tilemap = Util.FindChild(gameObject, "Building",true).GetComponent<Tilemap>();
         playerLayer.value = 6;
     }
 

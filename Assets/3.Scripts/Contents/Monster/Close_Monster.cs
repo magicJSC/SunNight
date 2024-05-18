@@ -14,8 +14,8 @@ public class Close_Monster : MonsterController
             {
                 if (col.GetComponent<Item>())
                 {
-                    Debug.Log("Àå¾Ö¹° ÆÄ±«");
-                    Destroy(col.gameObject);
+                    Vector2 tower = Managers.Game.tower.transform.position;
+                    Managers.Game.tilemap.SetTile(new Vector3Int((int)(col.transform.position.x - tower.x),(int)(col.transform.position.y - tower.y), 0),null);
                 }
                 else if (col.GetComponent<Tower>())
                 {

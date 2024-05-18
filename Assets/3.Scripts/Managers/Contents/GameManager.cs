@@ -6,9 +6,31 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
+    public void Init()
+    {
+        if(mouse == null)
+        {
+            mouse = FindAnyObjectByType<MouseController>();
+            if(mouse == null)
+            {
+                mouse = Instantiate(Resources.Load<GameObject>("Prefabs/Mouse")).GetComponent<MouseController>();
+            }
+        }
+        if(hotBar == null)
+        {
+            hotBar = FindAnyObjectByType<UI_HotBar>();
+            if (hotBar == null)
+            {
+                mouse = Instantiate(Resources.Load<GameObject>("UI/UI_HotBar/UI_HotBar")).GetComponent<MouseController>();
+            }
+        }
+        Set_HotBar_Choice();
+    }
+
+
     public Tower tower;
 
-    public MouseSelect select;
+    public MouseController mouse;
 
     #region 핫바
     public UI_HotBar hotBar;
@@ -52,24 +74,27 @@ public class GameManager : MonoBehaviour
     //선택한 값에 따라 다르게 실행
     public void Set_HotBar_Choice()
     {
-        if (select.info == null)
+        if (mouse.info == null)
             return;
 
-        select.info = hotBar_itemInfo[HotBar_Choice];
+        //달라진 값을 가져오게 한다
+        mouse.SetInfo();
+
+        //아이템이 설치 아이템일때
         if (hotBar_itemInfo[HotBar_Choice].itemType == Define.ItemType.Building && hotBar_itemInfo[HotBar_Choice].keyType == Define.KeyType.Exist)
         {
-            select.sample.SetActive(true);
-            select.sample.GetComponent<SpriteRenderer>().sprite = hotBar_itemInfo[HotBar_Choice].icon;
+            mouse.sample.SetActive(true);
+            mouse.sample.GetComponent<SpriteRenderer>().sprite = hotBar_itemInfo[HotBar_Choice].icon;
         }
         else
-            select.sample.SetActive(false);
+            mouse.sample.SetActive(false);
 
-        //타워를 소장하고 있지만 선택하고 있지 않을때
+        //기지를 소장하고 있지만 선택하고 있지 않을때
         if (hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist && HotBar_Choice == hotBar_itemInfo.Length - 1)
         {
             tower.gameObject.SetActive(true);
             tower.GetComponent<SpriteRenderer>().color = new Color32(225, 225, 225, 120);
-            select.tilemap.color = new Color32(225, 225, 225, 120);
+            Managers.Game.tilemap.color = new Color32(225, 225, 225, 120);
         }
         else if (hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist && HotBar_Choice != hotBar_itemInfo.Length - 1)
         {
@@ -134,4 +159,12 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+
+    public Tilemap tilemap;
+
+    //저녁과 아침이 목표 우선순위를 다르게 하기
+    public void SetTarget()
+    {
+
+    }
 }

@@ -17,6 +17,10 @@ public class Managers : MonoBehaviour
     public static GameManager Game { get { return Instance._game; } }
     #endregion
 
+    InputManager _input = new InputManager();
+
+    public static InputManager Input { get {  return Instance._input; } }
+
     void Start()
     {
         Init();
@@ -37,6 +41,12 @@ public class Managers : MonoBehaviour
             instance = go.GetComponent<Managers>();
 
             instance._network.Init();
+            instance._game.Init();
         }
+    }
+
+    private void Update()
+    {
+        _input.UpdateInput();
     }
 }

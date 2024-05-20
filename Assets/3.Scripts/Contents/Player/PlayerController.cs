@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
             hotBar = Instantiate(Resources.Load<GameObject>("UI/UI_HotBar/UI_HotBar")).GetComponent<UI_HotBar>();
         }
         rigid = GetComponent<Rigidbody2D>();
-        Managers.Input.playTypeAct += ChangePlayT;
     }
 
     void Update()
@@ -34,13 +33,5 @@ public class PlayerController : MonoBehaviour
         float y = Input.GetAxisRaw("Vertical");
 
         rigid.velocity = new Vector3(x,y,0) * speed;
-    }
-
-    void ChangePlayT()
-    {
-         if (Managers.Game.PlayType == Define.PlayType.Survive)
-             Managers.Game.PlayType = Define.PlayType.Building;
-         else
-             Managers.Game.PlayType= Define.PlayType.Survive;
     }
 }

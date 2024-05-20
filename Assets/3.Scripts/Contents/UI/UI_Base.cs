@@ -10,8 +10,15 @@ using UnityEngine.UI;
 public abstract class UI_Base : MonoBehaviour
 {
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
+    protected bool _init;
 
-    public abstract void Init();
+    public virtual void Init()
+    {
+        if (_init)
+            return;
+
+        Managers.Init();
+    }
 
     private void Start()
     {

@@ -1,4 +1,3 @@
-using Google.Protobuf.WellKnownTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,40 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
-    public void Init()
-    {
-        if(mouse == null)
-        {
-            mouse = FindAnyObjectByType<MouseController>();
-            if(mouse == null)
-            {
-                mouse = Instantiate(Resources.Load<GameObject>("Prefabs/Mouse")).GetComponent<MouseController>();
-            }
-        }
-        if(hotBar == null)
-        {
-            hotBar = FindAnyObjectByType<UI_HotBar>();
-            if (hotBar == null)
-            {
-                mouse = Instantiate(Resources.Load<GameObject>("UI/UI_HotBar/UI_HotBar")).GetComponent<MouseController>();
-            }
-        }
-        Set_HotBar_Choice();
-    }
-
-
-    public Tower tower;
-
-    public MouseController mouse;
-
-    #region 핫바
-    public UI_HotBar hotBar;
-
-    public int hotBar_choice = 0;
-    public int HotBar_Choice { get { return hotBar_choice; } set { hotBar_choice = value; Set_HotBar_Choice(); } }
-
+    #region 게임 데이터
     public HotBarInfo[] hotBar_itemInfo = new HotBarInfo[5];
-   
+
     public class HotBarInfo
     {
         public int id;
@@ -49,7 +17,7 @@ public class GameManager : MonoBehaviour
         public Define.KeyType keyType;
         public TileBase tile;
 
-        public HotBarInfo(int id,int count)
+        public HotBarInfo(int id, int count)
         {
 
             if (id == 0)
@@ -70,36 +38,106 @@ public class GameManager : MonoBehaviour
                 tile = i.tile;
         }
     }
+    #endregion
+
+    public void Init()
+    {
+        if (hotBar == null)
+        {
+            hotBar = FindAnyObjectByType<UI_HotBar>();
+            if (hotBar == null)
+            {
+                hotBar = Instantiate(Resources.Load<GameObject>("UI/UI_HotBar/UI_HotBar")).GetComponent<UI_HotBar>();
+            }
+            hotBar.Init();
+        }
+        if (mouse == null)
+        {
+            mouse = FindAnyObjectByType<MouseController>();
+            if (mouse == null)
+            {
+                mouse = Instantiate(Resources.Load<GameObject>("Prefabs/Mouse")).GetComponent<MouseController>();
+            }
+            mouse.Init();
+        }
+        if(tower == null)
+        {
+            tower = FindAnyObjectByType<Tower>();
+            if (tower == null)
+            {
+                tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
+            }
+        }
+        PlayType = Define.PlayType.Survive;
+    }
+
+    #region 플레이 타입
+    public Define.PlayType PlayType { get { return _playType; }
+        set 
+        {
+            _playType = value;
+            
+            switch(value)
+            {
+                case Define.PlayType.Survive:
+                    SetSurviveMode();
+                    break;
+                case Define.PlayType.Building:
+                    SetBuildingMode();
+                    break;
+            }
+        } 
+    }
+    Define.PlayType _playType = Define.PlayType.Survive;
+
+    void SetSurviveMode()
+    {
+        Managers.Input.mouse0Act = null;
+        Managers.Input.mouse1Act = null;
+        mouse.gameObject.SetActive(false);
+        Set_HotBar_Choice();
+    }
+
+    void SetBuildingMode()
+    {
+        mouse.gameObject.SetActive(true);
+        Set_HotBar_Choice();
+    }
+    #endregion
+
+    public Tower tower;
+
+    public MouseController mouse;
+
+    #region 핫바
+    public UI_HotBar hotBar;
+
+    public int hotBar_choice = 0;
+    public int HotBar_Choice { get { return hotBar_choice; } set { hotBar_choice = value; Set_HotBar_Choice(); } }
 
     //선택한 값에 따라 다르게 실행
     public void Set_HotBar_Choice()
     {
-        if (mouse.info == null)
-            return;
-
         //달라진 값을 가져오게 한다
         mouse.SetInfo();
 
-        //아이템이 설치 아이템일때
-        if (hotBar_itemInfo[HotBar_Choice].itemType == Define.ItemType.Building && hotBar_itemInfo[HotBar_Choice].keyType == Define.KeyType.Exist)
+        if(PlayType == Define.PlayType.Building)
         {
-            mouse.sample.SetActive(true);
-            mouse.sample.GetComponent<SpriteRenderer>().sprite = hotBar_itemInfo[HotBar_Choice].icon;
+            switch (hotBar_itemInfo[hotBar_choice].itemType)
+            {
+                case Define.ItemType.Building:
+                    mouse.ShowBuildSample();
+                    break;
+                case Define.ItemType.Tower:
+                    mouse.ShowTowerSample();
+                    break;
+                default:
+                    mouse.HideSample();
+                    break;
+            }
         }
         else
-            mouse.sample.SetActive(false);
-
-        //기지를 소장하고 있지만 선택하고 있지 않을때
-        if (hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist && HotBar_Choice == hotBar_itemInfo.Length - 1)
-        {
-            tower.gameObject.SetActive(true);
-            tower.GetComponent<SpriteRenderer>().color = new Color32(225, 225, 225, 120);
-            Managers.Game.tilemap.color = new Color32(225, 225, 225, 120);
-        }
-        else if (hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist && HotBar_Choice != hotBar_itemInfo.Length - 1)
-        {
-            tower.gameObject.SetActive(false);
-        }
+            mouse.HideSample();
     }
 
     //아이템 정보를 넣어줌

@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
 {
     public Action mouse0Act = null;
     public Action mouse1Act = null;
-
+    public Action playTypeAct = null;
 
     public void UpdateInput()
     {
@@ -18,5 +18,7 @@ public class InputManager : MonoBehaviour
             mouse0Act.Invoke();
         if (Input.GetKeyDown(KeyCode.Mouse1) && mouse1Act != null)
             mouse1Act.Invoke();
+        if(Input.GetKeyDown(KeyCode.Q) && playTypeAct != null)
+            playTypeAct.Invoke();
     }
 }

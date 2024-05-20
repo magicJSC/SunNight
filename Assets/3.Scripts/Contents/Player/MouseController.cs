@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static Define;
 
 public class MouseController : MonoBehaviour
 {
@@ -12,18 +13,25 @@ public class MouseController : MonoBehaviour
 
     private void Start()
     {
+        if(Managers.Game.mouse == null)
+         Init();
+    }
+
+    public void Init()
+    {
         Managers.Game.mouse = this;
         sample = Util.FindChild(gameObject, "Sample");
-        SetInfo();
     }
 
     private void Update()
     {
-        MoveSign();
+        if (info == null)
+            return;
+        MoveMouse();
         MoveTower();
     }
 
-    void MoveSign()
+    void MoveMouse()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition = new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
@@ -80,6 +88,19 @@ public class MouseController : MonoBehaviour
             Managers.Game.tilemap.SetTile(new Vector3Int((int)(transform.position.x - tower.x), (int)(transform.position.y - tower.y), 0), null);
         }
     }
+
+    public void ShowBuildSample()
+    {
+        //아이템이 설치 아이템일때
+        if (Managers.Game.hotBar_itemInfo[Managers.Game.HotBar_Choice].keyType == Define.KeyType.Exist)
+        {
+            Managers.Game.mouse.sample.SetActive(true);
+            Managers.Game.mouse.sample.GetComponent<SpriteRenderer>().sprite = Managers.Game.hotBar_itemInfo[Managers.Game.HotBar_Choice].icon;
+        }
+
+        if (Managers.Game.PlayType != Define.PlayType.Building && Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist)
+            Managers.Game.tower.gameObject.SetActive(false);
+    } 
     #endregion
 
     void MoveTower()
@@ -100,5 +121,24 @@ public class MouseController : MonoBehaviour
                 Managers.Game.tilemap.color = new Color(225, 225, 225, 120);
             }
         }
+    }
+    public void ShowTowerSample()
+    {
+        //기지를 소장하고 있지만 선택하고 있지 않을때
+       
+        if (Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist)
+        {
+            Managers.Game.tower.gameObject.SetActive(true);
+            Managers.Game.tower.GetComponent<SpriteRenderer>().color = new Color32(225, 225, 225, 120);
+            Managers.Game.tilemap.color = new Color32(225, 225, 225, 120);
+        }
+        Managers.Game.mouse.sample.SetActive(false);
+    }
+
+    public void HideSample()
+    {
+        if (Managers.Game.PlayType != Define.PlayType.Building && Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist)
+            Managers.Game.tower.gameObject.SetActive(false);
+        Managers.Game.mouse.sample.SetActive(false);
     }
 }

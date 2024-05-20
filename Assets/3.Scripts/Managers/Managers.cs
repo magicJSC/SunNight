@@ -18,9 +18,10 @@ public class Managers : MonoBehaviour
     #endregion
 
     InputManager _input = new InputManager();
+    SceneManagerEx _scene = new SceneManagerEx();
 
     public static InputManager Input { get {  return Instance._input; } }
-
+    public static SceneManagerEx Scene { get { return Instance._scene; } }
 
     public static void Init()
     {

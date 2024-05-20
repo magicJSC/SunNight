@@ -10,7 +10,14 @@ public class Define : MonoBehaviour
         Effect,
         MaxCount
     }
-   
+
+    public enum SceneType
+    {
+        None,
+        GameScene
+    }
+
+
     public enum UIEvent
     {
         Click,
@@ -42,4 +49,11 @@ public class Define : MonoBehaviour
         Attack,
         Die
     }
+
+    public enum PlayType 
+    {
+       Survive,
+       Building
+    }
+
 }

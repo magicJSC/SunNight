@@ -13,8 +13,9 @@ public class UI_HotBar : UI_Base
 
     public override void Init()
     {
-        Managers.Game.hotBar = this;
-        for(int i = 0;i<5;i++)
+        if (keys.Count != 0)
+            return;
+        for (int i = 0;i<5;i++)
         {
             UI_HotBar_Key go = Instantiate(Resources.Load<GameObject>("UI/UI_Hotbar/Key"),transform.GetChild(0)).GetComponent<UI_HotBar_Key>();
             keys.Add(go);
@@ -60,7 +61,7 @@ public class UI_HotBar : UI_Base
 
     #region 아이템 관련
     //값 가져오기
-    void Getinfo()
+    public void Getinfo()
     {
         int a =5;
         Managers.Game.hotBar_itemInfo[0] = new GameManager.HotBarInfo(3, 10);

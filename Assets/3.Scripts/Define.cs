@@ -52,8 +52,8 @@ public class Define : MonoBehaviour
 
     public enum PlayType 
     {
-       Survive,
-       Building
+       Surviver,
+       Builder
     }
 
 }

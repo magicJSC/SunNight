@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
                 tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
             }
         }
-        PlayType = Define.PlayType.Survive;
+        Set_HotBar_Choice();
     }
 
     #region 플레이 타입
@@ -79,29 +79,27 @@ public class GameManager : MonoBehaviour
             
             switch(value)
             {
-                case Define.PlayType.Survive:
+                case Define.PlayType.Surviver:
                     SetSurviveMode();
                     break;
-                case Define.PlayType.Building:
+                case Define.PlayType.Builder:
                     SetBuildingMode();
                     break;
             }
         } 
     }
-    Define.PlayType _playType = Define.PlayType.Survive;
+    Define.PlayType _playType = Define.PlayType.Surviver;
 
     void SetSurviveMode()
     {
         Managers.Input.mouse0Act = null;
         Managers.Input.mouse1Act = null;
         mouse.gameObject.SetActive(false);
-        Set_HotBar_Choice();
     }
 
     void SetBuildingMode()
     {
         mouse.gameObject.SetActive(true);
-        Set_HotBar_Choice();
     }
     #endregion
 
@@ -121,23 +119,22 @@ public class GameManager : MonoBehaviour
         //달라진 값을 가져오게 한다
         mouse.SetInfo();
 
-        if(PlayType == Define.PlayType.Building)
+   
+        switch (hotBar_itemInfo[hotBar_choice].itemType)
         {
-            switch (hotBar_itemInfo[hotBar_choice].itemType)
-            {
-                case Define.ItemType.Building:
-                    mouse.ShowBuildSample();
-                    break;
-                case Define.ItemType.Tower:
-                    mouse.ShowTowerSample();
-                    break;
-                default:
-                    mouse.HideSample();
-                    break;
-            }
+             case Define.ItemType.Building:
+                PlayType = Define.PlayType.Builder;
+                mouse.ShowBuildSample();
+                break;
+             case Define.ItemType.Tower:
+                PlayType = Define.PlayType.Builder;
+                mouse.ShowTowerSample();
+                break;
+             default:
+                PlayType = Define.PlayType.Surviver;
+                mouse.HideSample();
+                break;
         }
-        else
-            mouse.HideSample();
     }
 
     //아이템 정보를 넣어줌

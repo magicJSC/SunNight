@@ -98,7 +98,12 @@ public class MouseController : MonoBehaviour
             Managers.Game.mouse.sample.GetComponent<SpriteRenderer>().sprite = Managers.Game.hotBar_itemInfo[Managers.Game.HotBar_Choice].icon;
         }
 
+        //건축 모드가 아닐때 소장하고 있을때 
         if (Managers.Game.PlayType != Define.PlayType.Builder && Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist)
+            Managers.Game.tower.gameObject.SetActive(false);
+
+        //건축 모드일때 기지를 소장하고 있고 다른 선택을 하고 있을때
+        if (Managers.Game.PlayType == Define.PlayType.Builder && Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist && Managers.Game.HotBar_Choice != Managers.Game.hotBar_itemInfo.Length - 1)
             Managers.Game.tower.gameObject.SetActive(false);
     } 
     #endregion
@@ -124,8 +129,7 @@ public class MouseController : MonoBehaviour
     }
     public void ShowTowerSample()
     {
-        //기지를 소장하고 있지만 선택하고 있지 않을때
-       
+            //기지를 소장하고 있지만 선택하고 있지 않을때
         if (Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType == Define.KeyType.Exist)
         {
             Managers.Game.tower.gameObject.SetActive(true);

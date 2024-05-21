@@ -7,10 +7,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rigid;
     public UI_HotBar hotBar;
 
-    private void Start()
-    {
-       Init();
-    }
+    public GameObject toolParent;
 
     public void Init()
     {
@@ -19,6 +16,7 @@ public class PlayerController : MonoBehaviour
         {
             hotBar = Instantiate(Resources.Load<GameObject>("UI/UI_HotBar/UI_HotBar")).GetComponent<UI_HotBar>();
         }
+        toolParent = Util.FindChild(gameObject, "Tool");
         rigid = GetComponent<Rigidbody2D>();
     }
 

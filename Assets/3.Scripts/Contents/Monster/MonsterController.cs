@@ -76,7 +76,10 @@ public class MonsterController : MonoBehaviour
         if (target != null)
             onfight = OnFight.Battle;
         else
-            target = Managers.Game.tower.transform;
+            target = Managers.Game.SetTarget();
+
+       if(Define.KeyType.Exist == Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType)
+            target = Managers.Game.SetTarget();
 
         if (Vector2.Distance(target.transform.position, transform.position) < _stat._range)
         {

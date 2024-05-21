@@ -8,7 +8,7 @@ public class Tower : MonoBehaviour
     bool canMove = false;
     LayerMask playerLayer;
 
-    private void Start()
+    public void Init()
     {
         Managers.Game.tower = this;
         Managers.Game.tilemap = Util.FindChild(gameObject, "Building",true).GetComponent<Tilemap>();

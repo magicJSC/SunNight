@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -67,7 +68,18 @@ public class GameManager : MonoBehaviour
             {
                 tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
             }
+            tower.Init();
         }
+        if (player == null)
+        {
+            player = FindAnyObjectByType<PlayerController>();
+            if (player == null)
+            {
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Player")).GetComponent<PlayerController>();
+            }
+            player.Init();
+        }
+
         Set_HotBar_Choice();
     }
 
@@ -104,7 +116,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public Tower tower;
-
+    public PlayerController player;
     public MouseController mouse;
 
     #region 핫바
@@ -119,7 +131,8 @@ public class GameManager : MonoBehaviour
         //달라진 값을 가져오게 한다
         mouse.SetInfo();
 
-   
+        if(player.toolParent.transform.childCount != 0)
+            Destroy(player.toolParent.transform.GetChild(0).gameObject);
         switch (hotBar_itemInfo[hotBar_choice].itemType)
         {
              case Define.ItemType.Building:
@@ -129,6 +142,11 @@ public class GameManager : MonoBehaviour
              case Define.ItemType.Tower:
                 PlayType = Define.PlayType.Builder;
                 mouse.ShowTowerSample();
+                break;
+             case Define.ItemType.Tool:
+                PlayType = Define.PlayType.Surviver;
+                Instantiate(Resources.Load<GameObject>($"Prefabs/Items/{hotBar_itemInfo[hotBar_choice].id}"),player.toolParent.transform);
+                mouse.HideSample();
                 break;
              default:
                 PlayType = Define.PlayType.Surviver;
@@ -198,8 +216,11 @@ public class GameManager : MonoBehaviour
     public Tilemap tilemap;
 
     //저녁과 아침이 목표 우선순위를 다르게 하기
-    public void SetTarget()
+    public Transform SetTarget()
     {
-
+        if (Define.KeyType.Exist != hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType)
+            return tower.transform;
+        else
+            return player.transform;
     }
 }

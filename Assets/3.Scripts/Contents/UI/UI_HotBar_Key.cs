@@ -53,6 +53,7 @@ public class UI_HotBar_Key : UI_Base
             EmptyKey(index);
             return;
         }
+        text.gameObject.SetActive(false);
         icons.gameObject.SetActive(true);
         if(hotBar.itemType != Define.ItemType.Tool && hotBar.itemType != Define.ItemType.Tower)
              text.gameObject.SetActive(true);
@@ -76,6 +77,7 @@ public class UI_HotBar_Key : UI_Base
         icons.gameObject.SetActive(false);
         text.gameObject.SetActive(false);
         Managers.Game.hotBar_itemInfo[index].keyType = Define.KeyType.Empty;
+        Managers.Game.hotBar_itemInfo[index].itemType = Define.ItemType.None;
     }
 
     public void SetTowerIcon()

@@ -65,11 +65,11 @@ public class UI_HotBar : UI_Base
     {
         int a =5;
         Managers.Game.hotBar_itemInfo[0] = new GameManager.HotBarInfo(3, 10);
-        for(int i = 1; i < a; i++)
+        Managers.Game.hotBar_itemInfo[1] = new GameManager.HotBarInfo(4, 1);
+        for(int i = 2; i < a; i++)
         {
             Managers.Game.hotBar_itemInfo[i] = new GameManager.HotBarInfo(0, 0);
         }
-        Managers.Game.hotBar_itemInfo[keys.Count - 1].itemType = Define.ItemType.Tower; //마지막은 무조건 타워로
         keys[keys.Count - 1].SetTowerIcon();
     }
 
@@ -87,6 +87,7 @@ public class UI_HotBar : UI_Base
 
     public void GetTower()
     {
+        Managers.Game.hotBar_itemInfo[keys.Count - 1].itemType = Define.ItemType.Tower;
         Managers.Game.hotBar_itemInfo[keys.Count - 1].keyType = Define.KeyType.Exist;
         keys[keys.Count - 1].SetTowerIcon();
         Managers.Game.Set_HotBar_Choice();

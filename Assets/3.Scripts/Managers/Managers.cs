@@ -44,6 +44,7 @@ public class Managers : MonoBehaviour
 
     private void Update()
     {
-        _input.UpdateInput();
+        _input.OnUpdate();
+        _game.OnUpdate();
     }
 }

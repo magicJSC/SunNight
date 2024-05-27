@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
     public Action mouse0Act = null;
     public Action mouse1Act = null;
 
-    public void UpdateInput()
+    public void OnUpdate()
     {
         if (!Input.anyKey)
             return;

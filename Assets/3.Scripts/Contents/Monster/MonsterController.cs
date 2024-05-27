@@ -5,7 +5,8 @@ using UnityEngine;
 public class MonsterController : MonoBehaviour
 {
     Rigidbody2D rigid;
-    public LayerMask player;
+    public LayerMask playerLayer;
+    public LayerMask buildLayer;
 
     protected Transform target;
     protected Animator anim;
@@ -71,15 +72,24 @@ public class MonsterController : MonoBehaviour
         }
     }
 
+    //저녁과 아침이 목표 우선순위를 다르게 하기
+    public Transform SetTarget()
+    {
+        if (Define.KeyType.Exist != Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType)
+            return Managers.Game.tower.transform;
+        else
+            return Managers.Game.player.transform;
+    }
+
     protected virtual void OnIdle()
     {
         if (target != null)
             onfight = OnFight.Battle;
         else
-            target = Managers.Game.SetTarget();
+            target = SetTarget();
 
        if(Define.KeyType.Exist == Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].keyType)
-            target = Managers.Game.SetTarget();
+            target = SetTarget();
 
         if (Vector2.Distance(target.transform.position, transform.position) < _stat._range)
         {
@@ -127,7 +137,7 @@ public class MonsterController : MonoBehaviour
 
     void CheckObstacle()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.position - transform.position).normalized, _stat._range, player);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.position - transform.position).normalized, _stat._range, buildLayer);
         Debug.DrawRay(transform.position, (target.position - transform.position).normalized * _stat._range,Color.red);
         if(hit)
         {

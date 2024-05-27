@@ -7,9 +7,10 @@ using static UnityEngine.GraphicsBuffer;
 public class GameManager : MonoBehaviour
 {
     #region 게임 데이터
-    public HotBarInfo[] hotBar_itemInfo = new HotBarInfo[5];
+    public ItemInfo[] hotBar_itemInfo = new ItemInfo[5];
+    public ItemInfo[] inven_itemInfo = new ItemInfo[24];
 
-    public class HotBarInfo
+    public class ItemInfo
     {
         public int id;
         public int count;
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
         public Define.KeyType keyType;
         public TileBase tile;
 
-        public HotBarInfo(int id, int count)
+        public ItemInfo(int id, int count)
         {
 
             if (id == 0)
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
                 tile = i.tile;
         }
     }
+
+    public Dictionary<Vector2,int> tileData = new Dictionary<Vector2, int>();
     #endregion
 
     public void Init()
@@ -79,8 +82,19 @@ public class GameManager : MonoBehaviour
             }
             player.Init();
         }
+        if (lights == null)
+        {
+            lights = FindAnyObjectByType<LightController>();
+        }
 
         Set_HotBar_Choice();
+    }
+
+   
+
+    public void OnUpdate()
+    {
+        SetTime();
     }
 
     #region 플레이 타입
@@ -118,6 +132,8 @@ public class GameManager : MonoBehaviour
     public Tower tower;
     public PlayerController player;
     public MouseController mouse;
+
+    
 
     #region 핫바
     public UI_HotBar hotBar;
@@ -213,14 +229,39 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    public Tilemap tilemap;
 
-    //저녁과 아침이 목표 우선순위를 다르게 하기
-    public Transform SetTarget()
+    public Define.TimeType timeType = Define.TimeType.Morning;
+    public LightController lights;
+    public float curTime = 0;
+    public float hour = 6;
+    public float minute = 0;
+
+    void SetTime()
     {
-        if (Define.KeyType.Exist != hotBar_itemInfo[hotBar_itemInfo.Length - 1].keyType)
-            return tower.transform;
+        if (curTime >= 1)
+        {
+            curTime = 0;
+            lights.SetLight();
+
+            minute++;
+            if (minute == 60)
+            {
+                minute = 0;
+                hour++;
+                if (hour == 6)
+                    timeType = Define.TimeType.Morning;
+                else if (hour == 18)
+                {
+                    timeType = Define.TimeType.Night;
+
+                    if (hotBar_itemInfo[hotBar_itemInfo.Length-1].keyType == Define.KeyType.Exist)
+                     mouse.BuildTower(true);
+                }
+                if (hour == 24)
+                    hour = 0;
+            }
+        }
         else
-            return player.transform;
+            curTime += Time.deltaTime;
     }
 }

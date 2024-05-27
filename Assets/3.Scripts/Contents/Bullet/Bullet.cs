@@ -6,8 +6,8 @@ public class Bullet : MonoBehaviour
 {
     [HideInInspector]
     public float damage;
-    public LayerMask player;
-
+    public LayerMask playerLayer;
+    public LayerMask budildLayer;
     private void Start()
     {
         Destroy(gameObject,5);
@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == Mathf.Log(player.value,2))
+        if(collision.gameObject.layer == Mathf.Log(playerLayer.value,2) || collision.gameObject.layer == Mathf.Log(budildLayer.value, 2))
         {
             Hit(collision);
         }
@@ -28,8 +28,7 @@ public class Bullet : MonoBehaviour
         {
             if (col.GetComponent<Item>())
             {
-                Vector2 tower = Managers.Game.tower.transform.position;
-                Managers.Game.tilemap.SetTile(new Vector3Int((int)(col.transform.position.x - tower.x), (int)(col.transform.position.y - tower.y), 0), null);
+                col.GetComponent<Item_Buliding>().DeleteBuilding();
             }
             else if (col.GetComponent<Tower>())
             {

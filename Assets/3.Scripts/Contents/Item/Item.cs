@@ -18,4 +18,6 @@ public class Item : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 }

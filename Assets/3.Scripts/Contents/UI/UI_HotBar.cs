@@ -14,18 +14,12 @@ public class UI_HotBar : UI_Base
     public override void Init()
     {
         if (keys.Count != 0)
-            return;
-        for (int i = 0;i<5;i++)
-        {
-            UI_HotBar_Key go = Instantiate(Resources.Load<GameObject>("UI/UI_Hotbar/Key"),transform.GetChild(0)).GetComponent<UI_HotBar_Key>();
-            keys.Add(go);
-            keys[i].GetComponent<UI_HotBar_Key>().Init_Key();
-            keys[i].GetComponent<UI_HotBar_Key>().choice.SetActive(false);
-        }
+          return;
+        GetData();
+        MakeKeys();
         keys[keys.Count - 1].GetComponent<Image>().color = Color.yellow;
         keys[Managers.Game.hotBar_choice].GetComponent<UI_HotBar_Key>().choice.SetActive(true);
-        Getinfo();
-        SetKeys();
+        keys[keys.Count - 1].SetTowerIcon();
     }
 
     private void Update()
@@ -52,6 +46,17 @@ public class UI_HotBar : UI_Base
         }
     }
 
+    void MakeKeys()
+    {
+        for (int i = 0; i < Managers.Game.hotBar_itemInfo.Length; i++)
+        {
+            UI_HotBar_Key go = Instantiate(Resources.Load<GameObject>("UI/UI_Hotbar/Key"), transform.GetChild(0)).GetComponent<UI_HotBar_Key>();
+            keys.Add(go);
+            keys[i].GetComponent<UI_HotBar_Key>().Init();
+            SetKeys(i);
+        }
+    }
+
     void ChangeChoice(int change)
     {
         keys[Managers.Game.HotBar_Choice].GetComponent<UI_HotBar_Key>().UnChoice();
@@ -61,25 +66,24 @@ public class UI_HotBar : UI_Base
 
     #region 아이템 관련
     //값 가져오기
-    public void Getinfo()
+    public void GetData()
     {
         int a =5;
-        Managers.Game.hotBar_itemInfo[0] = new GameManager.HotBarInfo(3, 10);
-        Managers.Game.hotBar_itemInfo[1] = new GameManager.HotBarInfo(4, 1);
+        Managers.Game.hotBar_itemInfo[0] = new GameManager.ItemInfo(3, 10);
+        Managers.Game.hotBar_itemInfo[1] = new GameManager.ItemInfo(4, 1);
         for(int i = 2; i < a; i++)
         {
-            Managers.Game.hotBar_itemInfo[i] = new GameManager.HotBarInfo(0, 0);
+            Managers.Game.hotBar_itemInfo[i] = new GameManager.ItemInfo(0, 0);
         }
-        keys[keys.Count - 1].SetTowerIcon();
     }
 
     //핫바에 정보 보여주기
-   public void SetKeys()
+   public void SetKeys(int i = -1)
     {
-        for(int i = 0;i<keys.Count;i++)
-        {
+        if (i >= 0)
             keys[i].GetComponent<UI_HotBar_Key>().SetIcon(i);
-        }
+        else
+            keys[Managers.Game.HotBar_Choice].GetComponent<UI_HotBar_Key>().SetIcon(Managers.Game.HotBar_Choice);
     }
     #endregion
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -24,7 +25,7 @@ public class UI_HotBar_Key : UI_Base
         Choice
     }
 
-    public void Init_Key()
+    public new void Init()
     {
         Bind<Image>(typeof(Images));
         Bind<Text>(typeof(Texts));
@@ -32,16 +33,12 @@ public class UI_HotBar_Key : UI_Base
         icons = Get<Image>((int)Images.item);
         text = Get<Text>((int)Texts.Count);
         choice = Get<GameObject>((int)GameObjects.Choice);
-    }
-
-    public override void Init()
-    {
-
+        choice.SetActive(false);
     }
 
     public void SetIcon(int index)
     {
-        GameManager.HotBarInfo hotBar = Managers.Game.hotBar_itemInfo[index];
+        GameManager.ItemInfo hotBar = Managers.Game.hotBar_itemInfo[index];
         if(hotBar.itemType == Define.ItemType.Tower)
         {
             SetTowerIcon();
@@ -86,6 +83,7 @@ public class UI_HotBar_Key : UI_Base
         {
             icons.gameObject.SetActive(false);
             text.gameObject.SetActive(false);
+            Managers.Game.hotBar_itemInfo[Managers.Game.hotBar_itemInfo.Length - 1].itemType = Define.ItemType.None;
             return;
         }
         icons.gameObject.SetActive(true);

@@ -55,8 +55,9 @@ public class WeaponController : MonoBehaviour
         {
             if(col.gameObject.layer == monsterLayer)
             {
-                col.GetComponent<Stat>().Hp -= _damage;
-                if(col.GetComponent<Stat>().Hp <= 0)
+                MonsterStat stat = col.GetComponent<MonsterStat>();
+                stat.Hp = Util.GetTotalHp(stat.Hp,stat.Def,_damage);
+                if(stat.Hp <= 0)
                 {
                     Destroy(col.gameObject);
                 }

@@ -66,4 +66,10 @@ public static class Util
         name = name.Substring(0,name.IndexOf('('));
         return name;
     }
+
+    public static int GetTotalHp(float hp,float def,float damage,float pen=0)
+    {
+        int result = (int)(hp - (100 / (100 + def - pen)) * damage);
+        return result;
+    }
 }

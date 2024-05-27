@@ -53,7 +53,12 @@ public class Define : MonoBehaviour
     public enum PlayType 
     {
        Surviver,
-       Builder
+        Builder
     }
 
+    public enum TimeType
+    {
+        Morning,
+        Night
+    }
 }

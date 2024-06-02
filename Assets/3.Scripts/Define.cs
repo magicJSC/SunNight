@@ -50,15 +50,22 @@ public class Define : MonoBehaviour
         Die
     }
 
-    public enum PlayType 
+    public enum CursorType 
     {
-       Surviver,
-        Builder
+        Normal,
+        Builder,
+        Drag,
     }
 
     public enum TimeType
     {
         Morning,
         Night
+    }
+
+    public enum InvenType
+    {
+        Inven,
+        HotBar
     }
 }

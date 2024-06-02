@@ -24,7 +24,17 @@ public class ServerSession : PacketSession
 
     public override void OnRecvPacket(ArraySegment<byte> buffer)
     {
-        PacketId id = new();
+        Session session = this;
+
+        var protocolId = BitConverter.ToUInt16(session._recvArgs.Buffer, 2);
+        if (protocolId == 0)
+            return;
+
+        session.SetPacketId((Protocol.PacketId)protocolId);
+        PacketId id = session.GetPacketId();
+
+        Debug.Log($"PacketId : {id}");
+
         PktHandler(buffer, id);
     }
 
@@ -36,7 +46,6 @@ public class ServerSession : PacketSession
     #region PktHandler
     private void PktHandler(ArraySegment<byte> buffer, PacketId id)
     {
-
         switch (id)
         {
             case PacketId.PktCEnterGame:

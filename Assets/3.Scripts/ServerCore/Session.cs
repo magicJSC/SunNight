@@ -44,6 +44,7 @@ namespace ServerCore
     public abstract class Session
     {
         Socket _socket;
+        Protocol.PacketId _packetId;
         int _disconnected = 0;
 
         RecvBuffer _recvBuffer = new RecvBuffer(65535);
@@ -52,12 +53,15 @@ namespace ServerCore
         Queue<ArraySegment<byte>> _sendQueue = new Queue<ArraySegment<byte>>();
         List<ArraySegment<byte>> _pendingList = new List<ArraySegment<byte>>();
         SocketAsyncEventArgs _sendArgs = new SocketAsyncEventArgs();
-        SocketAsyncEventArgs _recvArgs = new SocketAsyncEventArgs();
+        public SocketAsyncEventArgs _recvArgs = new SocketAsyncEventArgs();
 
         public abstract void OnConnected(EndPoint endPoint);
         public abstract int OnRecv(ArraySegment<byte> buffer);
         public abstract void OnSend(int numOfBytes);
         public abstract void OnDisconnected(EndPoint endPoint);
+
+        public Protocol.PacketId GetPacketId() { return _packetId; }
+        public void SetPacketId(Protocol.PacketId packetId) { _packetId = packetId; }
 
         void Clear()
         {

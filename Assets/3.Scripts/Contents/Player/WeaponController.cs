@@ -18,6 +18,9 @@ public class WeaponController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         monsterLayer = 7;
+        point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        angle = Mathf.Atan2(point.y - transform.position.y, point.x - transform.position.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, transform.forward);
     }
     void Update()
     {

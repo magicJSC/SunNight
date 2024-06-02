@@ -53,6 +53,7 @@ public class UI_HotBar : UI_Base
             UI_HotBar_Key go = Instantiate(Resources.Load<GameObject>("UI/UI_Hotbar/Key"), transform.GetChild(0)).GetComponent<UI_HotBar_Key>();
             keys.Add(go);
             keys[i].GetComponent<UI_HotBar_Key>().Init();
+            go.keyId = i;
             SetKeys(i);
         }
     }
@@ -78,12 +79,32 @@ public class UI_HotBar : UI_Base
     }
 
     //핫바에 정보 보여주기
-   public void SetKeys(int i = -1)
+   public void SetKeys(int index)
     {
-        if (i >= 0)
-            keys[i].GetComponent<UI_HotBar_Key>().SetIcon(i);
-        else
-            keys[Managers.Game.HotBar_Choice].GetComponent<UI_HotBar_Key>().SetIcon(Managers.Game.HotBar_Choice);
+        keys[index].GetComponent<UI_HotBar_Key>().SetIcon();
+    }
+
+    //아이템 정보를 넣어줌
+    public void Set_HotBar_Info(int key_index, int id, int count)
+    {
+        if(id == 0)
+        {
+            keys[key_index].GetComponent<UI_HotBar_Key>().EmptyKey();
+            return;
+        }
+
+        Item item = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id에 따른 아이템 정보
+
+
+        Managers.Game.hotBar_itemInfo[key_index].id = id;
+        Managers.Game.hotBar_itemInfo[key_index].itemType = item.itemType;
+        Managers.Game.hotBar_itemInfo[key_index].count = count;
+        Managers.Game.hotBar_itemInfo[key_index].icon = item.itemIcon;
+        if (Managers.Game.hotBar_itemInfo[key_index].itemType == Define.ItemType.Building)   //건설 아이템은 타일을 따로 가지고 있는다
+            Managers.Game.hotBar_itemInfo[key_index].tile = item.tile;
+        Managers.Game.hotBar_itemInfo[key_index].keyType = Define.KeyType.Exist;
+
+        Managers.Game.hotBar.SetKeys(key_index);
     }
     #endregion
 

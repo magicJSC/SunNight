@@ -11,11 +11,6 @@ public class PlayerController : MonoBehaviour
 
     public void Init()
     {
-        hotBar = Util.FindChild(gameObject, "UI_HotBar").GetComponent<UI_HotBar>();
-        if (hotBar == null)
-        {
-            hotBar = Instantiate(Resources.Load<GameObject>("UI/UI_HotBar/UI_HotBar")).GetComponent<UI_HotBar>();
-        }
         toolParent = Util.FindChild(gameObject, "Tool");
         rigid = GetComponent<Rigidbody2D>();
     }
@@ -23,6 +18,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(!Managers.Game.inven.gameObject.activeSelf)
+                Managers.Game.inven.gameObject.SetActive(true);
+            else
+                Managers.Game.inven.gameObject.SetActive(false);
+        }
     }
 
     void Move()

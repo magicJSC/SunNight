@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static Define;
 using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
@@ -55,6 +56,14 @@ public class GameManager : MonoBehaviour
             }
             hotBar.Init();
         }
+        if (inven == null)
+        {
+            inven = FindAnyObjectByType<UI_Inven>();
+            if (inven == null)
+            {
+                inven = Instantiate(Resources.Load<GameObject>("UI/UI_Inven/UI_Inven")).GetComponent<UI_Inven>();
+            }
+        }
         if (mouse == null)
         {
             mouse = FindAnyObjectByType<MouseController>();
@@ -62,9 +71,17 @@ public class GameManager : MonoBehaviour
             {
                 mouse = Instantiate(Resources.Load<GameObject>("Prefabs/Mouse")).GetComponent<MouseController>();
             }
-            mouse.Init();
         }
-        if(tower == null)
+        if (build == null)
+        {
+            build = FindAnyObjectByType<Builder>();
+            if (build == null)
+            {
+                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<Builder>();
+            }
+            build.Init();
+        }
+        if (tower == null)
         {
             tower = FindAnyObjectByType<Tower>();
             if (tower == null)
@@ -97,42 +114,12 @@ public class GameManager : MonoBehaviour
         SetTime();
     }
 
-    #region 플레이 타입
-    public Define.PlayType PlayType { get { return _playType; }
-        set 
-        {
-            _playType = value;
-            
-            switch(value)
-            {
-                case Define.PlayType.Surviver:
-                    SetSurviveMode();
-                    break;
-                case Define.PlayType.Builder:
-                    SetBuildingMode();
-                    break;
-            }
-        } 
-    }
-    Define.PlayType _playType = Define.PlayType.Surviver;
-
-    void SetSurviveMode()
-    {
-        Managers.Input.mouse0Act = null;
-        Managers.Input.mouse1Act = null;
-        mouse.gameObject.SetActive(false);
-    }
-
-    void SetBuildingMode()
-    {
-        mouse.gameObject.SetActive(true);
-    }
-    #endregion
+   
 
     public Tower tower;
     public PlayerController player;
+    public Builder build;
     public MouseController mouse;
-
     
 
     #region 핫바
@@ -145,49 +132,32 @@ public class GameManager : MonoBehaviour
     public void Set_HotBar_Choice()
     {
         //달라진 값을 가져오게 한다
-        mouse.SetInfo();
-
-        if(player.toolParent.transform.childCount != 0)
+        build.SetInfo();
+        if (player.toolParent.transform.childCount != 0)
             Destroy(player.toolParent.transform.GetChild(0).gameObject);
         switch (hotBar_itemInfo[hotBar_choice].itemType)
         {
              case Define.ItemType.Building:
-                PlayType = Define.PlayType.Builder;
-                mouse.ShowBuildSample();
+                mouse.CursorType = Define.CursorType.Builder;
+                build.ShowBuildSample();
                 break;
              case Define.ItemType.Tower:
-                PlayType = Define.PlayType.Builder;
-                mouse.ShowTowerSample();
+                mouse.CursorType = Define.CursorType.Builder;
+                build.ShowTowerSample();
                 break;
              case Define.ItemType.Tool:
-                PlayType = Define.PlayType.Surviver;
+                mouse.CursorType = Define.CursorType.Normal;
                 Instantiate(Resources.Load<GameObject>($"Prefabs/Items/{hotBar_itemInfo[hotBar_choice].id}"),player.toolParent.transform);
-                mouse.HideSample();
+                build.HideSample();
                 break;
              default:
-                PlayType = Define.PlayType.Surviver;
-                mouse.HideSample();
+                mouse.CursorType = Define.CursorType.Normal;
+                build.HideSample();
                 break;
         }
     }
 
-    //아이템 정보를 넣어줌
-    public void Add_HotBar_Info(int key_index,int id,int count)
-    {
-        Item item = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id에 따른 아이템 정보
-
-
-        hotBar_itemInfo[key_index].id = id;
-        hotBar_itemInfo[key_index].itemType = item.itemType;
-        hotBar_itemInfo[key_index].count = count;
-        hotBar_itemInfo[key_index].icon = item.itemIcon;
-        if (hotBar_itemInfo[key_index].itemType == Define.ItemType.Building)   //건설 아이템은 타일을 따로 가지고 있는다
-            hotBar_itemInfo[key_index].tile = item.tile;
-        hotBar_itemInfo[key_index].keyType = Define.KeyType.Exist;
-
-        hotBar.SetKeys();
-    }
-
+   
 
     public void AddItem(Item item)
     {
@@ -199,7 +169,7 @@ public class GameManager : MonoBehaviour
             {
                 if (item.id == hotBar_itemInfo[i].id && hotBar_itemInfo[i].count < 99)
                 {
-                    Add_HotBar_Info(i, item.id, hotBar_itemInfo[i].count + 1);
+                    hotBar.Set_HotBar_Info(i, item.id, hotBar_itemInfo[i].count + 1);
                     added = true;
                     break;
                 }
@@ -212,7 +182,7 @@ public class GameManager : MonoBehaviour
             //추가 하지 못했다면 비어있는 칸에 넣기
             if (!added)
             {
-                Add_HotBar_Info(empty, item.id, hotBar_itemInfo[empty].count + 1);
+                hotBar.Set_HotBar_Info(empty, item.id, hotBar_itemInfo[empty].count + 1);
             }
         }
         else //도구 아이템일때
@@ -221,15 +191,17 @@ public class GameManager : MonoBehaviour
             {
                 if (Define.KeyType.Empty == hotBar_itemInfo[i].keyType)
                 {
-                    Add_HotBar_Info(i, item.id, 1);
+                    hotBar.Set_HotBar_Info(i, item.id, 1);
                     break;
                 }
             }
         }
     }
     #endregion
+    public UI_Inven inven;
+    public (int index, Define.InvenType invenType) changeSpot; //두번째에 받아오는 값들
 
-
+   
     public Define.TimeType timeType = Define.TimeType.Morning;
     public LightController lights;
     public float curTime = 0;
@@ -255,7 +227,7 @@ public class GameManager : MonoBehaviour
                     timeType = Define.TimeType.Night;
 
                     if (hotBar_itemInfo[hotBar_itemInfo.Length-1].keyType == Define.KeyType.Exist)
-                     mouse.BuildTower(true);
+                     build.BuildTower(true);
                 }
                 if (hour == 24)
                     hour = 0;

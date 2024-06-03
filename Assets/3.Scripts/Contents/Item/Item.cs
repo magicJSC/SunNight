@@ -14,7 +14,7 @@ public class Item : MonoBehaviour
     {
         if (collision.gameObject.layer == 6 && itemType != Define.ItemType.Building)
         {
-            Managers.Game.AddItem(this);
+            Managers.Game.AddItem(id);
             Destroy(gameObject);
         }
     }

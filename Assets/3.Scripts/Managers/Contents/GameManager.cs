@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
+using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
             {
                 inven = Instantiate(Resources.Load<GameObject>("UI/UI_Inven/UI_Inven")).GetComponent<UI_Inven>();
             }
+            inven.Init();
         }
         if (mouse == null)
         {
@@ -114,15 +116,13 @@ public class GameManager : MonoBehaviour
         SetTime();
     }
 
-   
-
     public Tower tower;
     public PlayerController player;
     public Builder build;
     public MouseController mouse;
     
 
-    #region 핫바
+    #region 인벤토리
     public UI_HotBar hotBar;
 
     public int hotBar_choice = 0;
@@ -159,19 +159,23 @@ public class GameManager : MonoBehaviour
 
    
 
-    public void AddItem(Item item)
+    public bool AddItem(int id,int count = 1)
+    {
+        Item item = Resources.Load<Item>($"Prefabs/Items/{id}");
+        return Add_Item_Inven(item,count);
+    }
+
+    bool Add_Item_HotBar(Item item, int count = 1)
     {
         if (item.itemType != Define.ItemType.Tool)   //재료 아이템일때
         {
-            bool added = false;
             int empty = -1;
             for (int i = 0; i < hotBar_itemInfo.Length - 1; i++)
             {
                 if (item.id == hotBar_itemInfo[i].id && hotBar_itemInfo[i].count < 99)
                 {
-                    hotBar.Set_HotBar_Info(i, item.id, hotBar_itemInfo[i].count + 1);
-                    added = true;
-                    break;
+                    hotBar.Set_HotBar_Info(i, item.id, hotBar_itemInfo[i].count + count);
+                    return true;
                 }
                 else
                 {
@@ -180,10 +184,13 @@ public class GameManager : MonoBehaviour
                 }
             }
             //추가 하지 못했다면 비어있는 칸에 넣기
-            if (!added)
+            if (empty != -1)
             {
-                hotBar.Set_HotBar_Info(empty, item.id, hotBar_itemInfo[empty].count + 1);
+                hotBar.Set_HotBar_Info(empty, item.id, hotBar_itemInfo[empty].count + count);
+                return true;
             }
+
+            return false;
         }
         else //도구 아이템일때
         {
@@ -192,12 +199,57 @@ public class GameManager : MonoBehaviour
                 if (Define.KeyType.Empty == hotBar_itemInfo[i].keyType)
                 {
                     hotBar.Set_HotBar_Info(i, item.id, 1);
-                    break;
+                    return true;
                 }
             }
+            return false;
+        }
+    }
+
+    bool Add_Item_Inven(Item item, int count = 1)
+    {
+        if (item.itemType != Define.ItemType.Tool)   //재료 아이템일때
+        {
+            int empty = -1;
+            for (int i = 0; i < inven_itemInfo.Length - 1; i++)
+            {
+                if (item.id == inven_itemInfo[i].id && inven_itemInfo[i].count < 99)
+                {
+                    inven.Set_Inven_Info(i, item.id, inven_itemInfo[i].count + count);
+                    return true;
+                }
+                else
+                {
+                    if (empty == -1 && Define.KeyType.Empty == inven_itemInfo[i].keyType)
+                        empty = i;
+                }
+            }
+            //추가 하지 못했다면 비어있는 칸에 넣기
+            if (empty != -1)
+            {
+                inven.Set_Inven_Info(empty, item.id, inven_itemInfo[empty].count + count);
+                return true;
+            }
+
+            //추가 하지 못했는데 비어있는 칸도 없을때
+            return Add_Item_HotBar(item, count);
+        }
+        else //도구 아이템일때
+        {
+            for (int i = 0; i < inven_itemInfo.Length - 1; i++)
+            {
+                if (Define.KeyType.Empty == inven_itemInfo[i].keyType)
+                {
+                    inven.Set_Inven_Info(i, item.id, 1);
+                    return true;
+                }
+            }
+
+            return Add_Item_HotBar(item,count);
         }
     }
     #endregion
+
     public UI_Inven inven;
     public (int index, Define.InvenType invenType) changeSpot; //두번째에 받아오는 값들
 

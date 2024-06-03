@@ -20,6 +20,7 @@ public class UI_HotBar : UI_Base
         keys[keys.Count - 1].GetComponent<Image>().color = Color.yellow;
         keys[Managers.Game.hotBar_choice].GetComponent<UI_HotBar_Key>().choice.SetActive(true);
         keys[keys.Count - 1].SetTowerIcon();
+        GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     private void Update()
@@ -95,7 +96,11 @@ public class UI_HotBar : UI_Base
 
         Item item = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id에 따른 아이템 정보
 
-
+        if (count > 99)
+        {
+            Managers.Game.AddItem(id, count - 99);
+            count = 99;
+        }
         Managers.Game.hotBar_itemInfo[key_index].id = id;
         Managers.Game.hotBar_itemInfo[key_index].itemType = item.itemType;
         Managers.Game.hotBar_itemInfo[key_index].count = count;
@@ -116,6 +121,7 @@ public class UI_HotBar : UI_Base
         Managers.Game.hotBar_itemInfo[keys.Count - 1].keyType = Define.KeyType.Exist;
         keys[keys.Count - 1].SetTowerIcon();
         Managers.Game.Set_HotBar_Choice();
+        
     } 
     #endregion
 }

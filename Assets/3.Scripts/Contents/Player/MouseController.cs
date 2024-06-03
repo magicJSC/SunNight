@@ -33,11 +33,13 @@ public class MouseController : UI_Base
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition)+new Vector3(0,0,10);
     }
 
-    public void SetIcon(Image icon,Text count)
+    public void Set_Mouse_ItemIcon(Image icon,Text count)
     {
         if(_icon == null)
             Init();
-        _icon.GetComponent<Image>().sprite = icon.sprite;
+        icon.gameObject.SetActive(false);
+        count.gameObject.SetActive(false);
+        _icon.GetComponent<SpriteRenderer>().sprite = icon.sprite;
         _count.GetComponent<Text>().text = count.text;
     }
 

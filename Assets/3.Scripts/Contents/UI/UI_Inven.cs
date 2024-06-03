@@ -20,21 +20,28 @@ public class UI_Inven : UI_Base
         Hide
     }
 
+    bool _init;
+
     public override void Init()
     {
+        if (_init)
+            return;
+
+        _init = true;
         Bind<GameObject>(typeof(GameObjects));
         back = Get<GameObject>((int)GameObjects.Background);
         grid = Get<GameObject>((int)GameObjects.Grid);
         hide = Get<GameObject>((int)GameObjects.Hide);
+        GetComponent<Canvas>().worldCamera = Camera.main;
 
         UI_EventHandler evt = back.GetComponent<UI_EventHandler>();
-        evt._OnDrag += (PointerEventData p) => { back.transform.position = new Vector3(p.position.x + startPos.x, p.position.y + startPos.y);};
-        evt._OnDown += (PointerEventData p) => { startPos = new Vector3(back.transform.position.x - p.position.x, back.transform.position.y - p.position.y); };
+        evt._OnDrag += (PointerEventData p) => { back.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(p.position).x + startPos.x, Camera.main.ScreenToWorldPoint(p.position).y + startPos.y);};
+        evt._OnDown += (PointerEventData p) => { startPos = new Vector3(back.transform.position.x - Camera.main.ScreenToWorldPoint(p.position).x, back.transform.position.y - Camera.main.ScreenToWorldPoint(p.position).y); };
         evt._OnEnter += (PointerEventData p) =>
         {
             if (Managers.Game.mouse.CursorType == Define.CursorType.Drag)
                 return;
-            Managers.Game.mouse.CursorType = Define.CursorType.Normal; 
+            Managers.Game.mouse.CursorType = Define.CursorType.Normal;
         };
         evt._OnExit += (PointerEventData p) => 
         {
@@ -88,12 +95,17 @@ public class UI_Inven : UI_Base
 
         Managers.Game.inven_itemInfo[key_index].id = id;
         Managers.Game.inven_itemInfo[key_index].itemType = item.itemType;
+
+        if(count > 99)
+        {
+            Managers.Game.AddItem(id,count - 99);
+            count = 99;
+        }
         Managers.Game.inven_itemInfo[key_index].count = count;
         Managers.Game.inven_itemInfo[key_index].icon = item.itemIcon;
         if (Managers.Game.inven_itemInfo[key_index].itemType == Define.ItemType.Building)   //건설 아이템은 타일을 따로 가지고 있는다
             Managers.Game.inven_itemInfo[key_index].tile = item.tile;
         Managers.Game.inven_itemInfo[key_index].keyType = Define.KeyType.Exist;
-
         SetKeys(key_index);
     }
 

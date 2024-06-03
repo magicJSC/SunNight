@@ -103,7 +103,7 @@ public class Builder : MonoBehaviour
         GameObject go = Managers.Game.tower.tilemap.GetInstantiatedObject(new Vector3Int((int)(transform.position.x - tower.x), (int)(transform.position.y - tower.y), 0));
         if (go != null)
         {
-            Managers.Game.AddItem(go.GetComponent<Item>());
+            Managers.Game.AddItem(go.GetComponent<Item>().id);
             Managers.Game.Set_HotBar_Choice();
             go.GetComponent<Item_Buliding>().DeleteBuilding();
         }

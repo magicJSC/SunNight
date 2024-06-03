@@ -26,11 +26,15 @@ namespace Protocol {
           string.Concat(
             "CgpFbnVtLnByb3RvEghQcm90b2NvbCpoCgpQbGF5ZXJUeXBlEhQKEFBMQVlF",
             "Ul9UWVBFX05PTkUQABIWChJQTEFZRVJfVFlQRV9LTklHSFQQARIUChBQTEFZ",
-            "RVJfVFlQRV9NQUdFEAISFgoSUExBWUVSX1RZUEVfQVJDSEVSEANiBnByb3Rv",
-            "Mw=="));
+            "RVJfVFlQRV9NQUdFEAISFgoSUExBWUVSX1RZUEVfQVJDSEVSEAMq1AEKCFBh",
+            "Y2tldElkEgwKCFBLVF9OT05FEAASFAoQUEtUX0NfRU5URVJfR0FNRRABEhQK",
+            "EFBLVF9TX0VOVEVSX0dBTUUQAhIUChBQS1RfQ19MRUFWRV9HQU1FEAMSFAoQ",
+            "UEtUX1NfTEVBVkVfR0FNRRAEEg8KC1BLVF9TX1NQQVdOEAUSEQoNUEtUX1Nf",
+            "REVTUEFXThAGEg4KClBLVF9DX01PVkUQBxIOCgpQS1RfU19NT1ZFEAgSDgoK",
+            "UEtUX0NfQ0hBVBAJEg4KClBLVF9TX0NIQVQQCmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.PlayerType), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.PlayerType), typeof(global::Protocol.PacketId), }, null, null));
     }
     #endregion
 
@@ -41,6 +45,20 @@ namespace Protocol {
     [pbr::OriginalName("PLAYER_TYPE_KNIGHT")] Knight = 1,
     [pbr::OriginalName("PLAYER_TYPE_MAGE")] Mage = 2,
     [pbr::OriginalName("PLAYER_TYPE_ARCHER")] Archer = 3,
+  }
+
+  public enum PacketId {
+    [pbr::OriginalName("PKT_NONE")] PktNone = 0,
+    [pbr::OriginalName("PKT_C_ENTER_GAME")] PktCEnterGame = 1,
+    [pbr::OriginalName("PKT_S_ENTER_GAME")] PktSEnterGame = 2,
+    [pbr::OriginalName("PKT_C_LEAVE_GAME")] PktCLeaveGame = 3,
+    [pbr::OriginalName("PKT_S_LEAVE_GAME")] PktSLeaveGame = 4,
+    [pbr::OriginalName("PKT_S_SPAWN")] PktSSpawn = 5,
+    [pbr::OriginalName("PKT_S_DESPAWN")] PktSDespawn = 6,
+    [pbr::OriginalName("PKT_C_MOVE")] PktCMove = 7,
+    [pbr::OriginalName("PKT_S_MOVE")] PktSMove = 8,
+    [pbr::OriginalName("PKT_C_CHAT")] PktCChat = 9,
+    [pbr::OriginalName("PKT_S_CHAT")] PktSChat = 10,
   }
 
   #endregion

@@ -17,7 +17,27 @@ class PacketHandler
 
     public static void SLeaveGameHandler(PacketSession session, IMessage packet)
     {
-        S_LEAVE_GAME enterGamePacket = packet as S_LEAVE_GAME;
+        S_LEAVE_GAME leaveGamePacket = packet as S_LEAVE_GAME;
+        ServerSession serverSession = session as ServerSession;
+    }
+
+    public static void SSpawnHandler(PacketSession session, IMessage packet)
+    {
+        S_SPAWN spawnPacket = packet as S_SPAWN;
+        ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_SpawnHandler");
+    }
+
+    public static void SDespawnHandler(PacketSession session, IMessage packet)
+    {
+        S_DESPAWN spawnPacket = packet as S_DESPAWN;
+        ServerSession serverSession = session as ServerSession;
+    }
+
+    public static void SMoveHandler(PacketSession session, IMessage packet)
+    {
+        S_MOVE movePacket = packet as S_MOVE;
         ServerSession serverSession = session as ServerSession;
     }
 

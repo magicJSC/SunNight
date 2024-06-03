@@ -65,7 +65,16 @@ public class Define : MonoBehaviour
 
     public enum InvenType
     {
+        None,
         Inven,
         HotBar
+    }
+
+    public enum DropType
+    {
+        Add,
+        Change,
+        Return,
+        Move
     }
 }

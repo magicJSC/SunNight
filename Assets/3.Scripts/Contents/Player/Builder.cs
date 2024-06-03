@@ -11,7 +11,7 @@ public class Builder : MonoBehaviour
 
     public GameObject sample;
 
-   
+    public bool canBuild;
     private void Start()
     {
         if(Managers.Game.mouse == null)

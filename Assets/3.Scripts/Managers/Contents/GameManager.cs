@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
-using static UnityEditor.Progress;
-using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,8 +15,8 @@ public class GameManager : MonoBehaviour
         public int id;
         public int count;
         public Sprite icon;
-        public Define.ItemType itemType;
-        public Define.KeyType keyType;
+        public ItemType itemType;
+        public KeyType keyType;
         public TileBase tile;
 
         public ItemInfo(int id, int count)
@@ -27,18 +25,18 @@ public class GameManager : MonoBehaviour
             if (id == 0)
             {
                 this.id = id;
-                keyType = Define.KeyType.Empty;
+                keyType = KeyType.Empty;
                 return;
             }
             Item i = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id에 따른 아이템 정보
             if (i == null)
                 Debug.Log($"id가 {id}인 아이템은 없습니다");
-            keyType = Define.KeyType.Exist;
+            keyType = KeyType.Exist;
             this.id = id;
             itemType = i.itemType;
             icon = i.itemIcon;
             this.count = count;
-            if (itemType == Define.ItemType.Building)
+            if (itemType == ItemType.Building)
                 tile = i.tile;
         }
     }
@@ -137,21 +135,21 @@ public class GameManager : MonoBehaviour
             Destroy(player.toolParent.transform.GetChild(0).gameObject);
         switch (hotBar_itemInfo[hotBar_choice].itemType)
         {
-             case Define.ItemType.Building:
-                mouse.CursorType = Define.CursorType.Builder;
+             case ItemType.Building:
+                mouse.CursorType = CursorType.Builder;
                 build.ShowBuildSample();
                 break;
-             case Define.ItemType.Tower:
-                mouse.CursorType = Define.CursorType.Builder;
+             case ItemType.Tower:
+                mouse.CursorType = CursorType.Builder;
                 build.ShowTowerSample();
                 break;
-             case Define.ItemType.Tool:
-                mouse.CursorType = Define.CursorType.Normal;
+             case ItemType.Tool:
+                mouse.CursorType =CursorType.Normal;
                 Instantiate(Resources.Load<GameObject>($"Prefabs/Items/{hotBar_itemInfo[hotBar_choice].id}"),player.toolParent.transform);
                 build.HideSample();
                 break;
              default:
-                mouse.CursorType = Define.CursorType.Normal;
+                mouse.CursorType = CursorType.Normal;
                 build.HideSample();
                 break;
         }
@@ -167,7 +165,7 @@ public class GameManager : MonoBehaviour
 
     bool Add_Item_HotBar(Item item, int count = 1)
     {
-        if (item.itemType != Define.ItemType.Tool)   //재료 아이템일때
+        if (item.itemType != ItemType.Tool)   //재료 아이템일때
         {
             int empty = -1;
             for (int i = 0; i < hotBar_itemInfo.Length - 1; i++)
@@ -179,7 +177,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    if (empty == -1 && Define.KeyType.Empty == hotBar_itemInfo[i].keyType)
+                    if (empty == -1 && KeyType.Empty == hotBar_itemInfo[i].keyType)
                         empty = i;
                 }
             }
@@ -196,7 +194,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < hotBar_itemInfo.Length - 1; i++)
             {
-                if (Define.KeyType.Empty == hotBar_itemInfo[i].keyType)
+                if (KeyType.Empty == hotBar_itemInfo[i].keyType)
                 {
                     hotBar.Set_HotBar_Info(i, item.id, 1);
                     return true;
@@ -208,7 +206,7 @@ public class GameManager : MonoBehaviour
 
     bool Add_Item_Inven(Item item, int count = 1)
     {
-        if (item.itemType != Define.ItemType.Tool)   //재료 아이템일때
+        if (item.itemType != ItemType.Tool)   //재료 아이템일때
         {
             int empty = -1;
             for (int i = 0; i < inven_itemInfo.Length - 1; i++)
@@ -220,7 +218,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    if (empty == -1 && Define.KeyType.Empty == inven_itemInfo[i].keyType)
+                    if (empty == -1 && KeyType.Empty == inven_itemInfo[i].keyType)
                         empty = i;
                 }
             }
@@ -238,7 +236,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < inven_itemInfo.Length - 1; i++)
             {
-                if (Define.KeyType.Empty == inven_itemInfo[i].keyType)
+                if (KeyType.Empty == inven_itemInfo[i].keyType)
                 {
                     inven.Set_Inven_Info(i, item.id, 1);
                     return true;
@@ -251,10 +249,10 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public UI_Inven inven;
-    public (int index, Define.InvenType invenType) changeSpot; //두번째에 받아오는 값들
+    public (int index, InvenType invenType) changeSpot; //두번째에 받아오는 값들
 
    
-    public Define.TimeType timeType = Define.TimeType.Morning;
+    public TimeType timeType = TimeType.Morning;
     public LightController lights;
     public float curTime = 0;
     public float hour = 6;
@@ -273,12 +271,12 @@ public class GameManager : MonoBehaviour
                 minute = 0;
                 hour++;
                 if (hour == 6)
-                    timeType = Define.TimeType.Morning;
+                    timeType = TimeType.Morning;
                 else if (hour == 18)
                 {
-                    timeType = Define.TimeType.Night;
+                    timeType = TimeType.Night;
 
-                    if (hotBar_itemInfo[hotBar_itemInfo.Length-1].keyType == Define.KeyType.Exist)
+                    if (hotBar_itemInfo[hotBar_itemInfo.Length-1].keyType == KeyType.Exist)
                      build.BuildTower(true);
                 }
                 if (hour == 24)

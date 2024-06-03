@@ -25,6 +25,8 @@ class PacketHandler
     {
         S_SPAWN spawnPacket = packet as S_SPAWN;
         ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_SpawnHandler");
     }
 
     public static void SDespawnHandler(PacketSession session, IMessage packet)

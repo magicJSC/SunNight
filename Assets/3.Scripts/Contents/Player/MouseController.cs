@@ -15,7 +15,6 @@ public class MouseController : UI_Base
         Count
     }
 
-    bool _init = false;
 
     public override void Init()
     {
@@ -26,6 +25,7 @@ public class MouseController : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         _icon = Get<GameObject>((int)GameObjects.Icon);
         _count = Get<GameObject>((int)GameObjects.Count);
+       
     }
 
     private void Update()

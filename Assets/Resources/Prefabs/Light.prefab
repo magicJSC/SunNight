@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3405585724752274774}
   - component: {fileID: 1717083569878231477}
   m_Layer: 0
-  m_Name: GlobalLight
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

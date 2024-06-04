@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     {
         toolParent = Util.FindChild(gameObject, "Tool");
         rigid = GetComponent<Rigidbody2D>();
+        Camera.main.GetComponent<CameraController>().target = transform;
+
     }
 
     void Update()

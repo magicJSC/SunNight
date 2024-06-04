@@ -13,7 +13,16 @@ public class GameManager : MonoBehaviour
 
     public void Init()
     {
-        if(grid == null)
+        if (player == null)
+        {
+            player = FindAnyObjectByType<PlayerController>();
+            if (player == null)
+            {
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Player")).GetComponent<PlayerController>();
+            }
+            player.Init();
+        }
+        if (grid == null)
         {
             grid = FindAnyObjectByType<GridManager>();
             if(grid == null)
@@ -21,6 +30,15 @@ public class GameManager : MonoBehaviour
                 grid = Instantiate(Resources.Load<GameObject>("Prefabs/Grid")).GetComponent<GridManager>();
             }
             grid.Init();
+        }
+        if (tower == null)
+        {
+            tower = FindAnyObjectByType<Tower>();
+            if (tower == null)
+            {
+                tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
+            }
+            tower.Init();
         }
         if (build == null)
         {
@@ -40,27 +58,15 @@ public class GameManager : MonoBehaviour
             }
             mouse.Init();
         }
-        if (tower == null)
-        {
-            tower = FindAnyObjectByType<Tower>();
-            if (tower == null)
-            {
-                tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
-            }
-            tower.Init();
-        }
-        if (player == null)
-        {
-            player = FindAnyObjectByType<PlayerController>();
-            if (player == null)
-            {
-                player = Instantiate(Resources.Load<GameObject>("Prefabs/Player")).GetComponent<PlayerController>();
-            }
-            player.Init();
-        }
+        
         if (lights == null)
         {
-            lights = FindAnyObjectByType<LightController>().GetComponent<LightController>();
+            lights = FindAnyObjectByType<LightController>();
+            if(lights == null)
+            {
+                lights = Instantiate(Resources.Load<GameObject>("Prefabs/Light")).GetComponent<LightController>();
+            }
+            lights.Init();
         }
 
         Managers.Inven.Set_HotBar_Choice();

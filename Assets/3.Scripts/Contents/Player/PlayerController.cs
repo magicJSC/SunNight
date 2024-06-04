@@ -20,10 +20,10 @@ public class PlayerController : MonoBehaviour
         Move();
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if(!Managers.Game.inven.gameObject.activeSelf)
-                Managers.Game.inven.gameObject.SetActive(true);
+            if(!Managers.Inven.inven.gameObject.activeSelf)
+                Managers.Inven.inven.gameObject.SetActive(true);
             else
-                Managers.Game.inven.gameObject.SetActive(false);
+                Managers.Inven.inven.gameObject.SetActive(false);
         }
     }
 

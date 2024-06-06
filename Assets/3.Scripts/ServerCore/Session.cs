@@ -44,7 +44,7 @@ namespace ServerCore
     public abstract class Session
     {
         Socket _socket;
-        Protocol.PacketId _packetId;
+        Protocol.PacketId _packetId = Protocol.PacketId.PktNone;
         int _disconnected = 0;
 
         RecvBuffer _recvBuffer = new RecvBuffer(65535);

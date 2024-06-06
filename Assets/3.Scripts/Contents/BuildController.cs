@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
 
-public class Builder : MonoBehaviour
+public class BuildController : MonoBehaviour
 {
     public InvenManager.ItemInfo info;
 
@@ -114,6 +114,7 @@ public class Builder : MonoBehaviour
         }
     }
 
+    //강화 할수 있는 UI 생성
     void ChoiceBuild(Vector3Int pos)
     {
         Vector2 towerPos = Managers.Game.tower.transform.position;

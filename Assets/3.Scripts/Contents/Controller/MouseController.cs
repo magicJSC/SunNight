@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MouseControllerEx : UI_Base
+public class MouseController : UI_Base
 {
     //¸¶¿ì½º
     [HideInInspector]

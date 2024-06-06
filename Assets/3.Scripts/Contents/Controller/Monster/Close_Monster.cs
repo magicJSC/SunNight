@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CloseMonster : MonsterController
+public class Close_Monster : MonsterController
 {
     void Atk()
     {

@@ -15,10 +15,10 @@ public class GameManager : MonoBehaviour
     {
         if (player == null)
         {
-            player = FindAnyObjectByType<PlayerControllerEx>();
+            player = FindAnyObjectByType<PlayerController>();
             if (player == null)
             {
-                player = Instantiate(Resources.Load<GameObject>("Prefabs/Player")).GetComponent<PlayerControllerEx>();
+                player = Instantiate(Resources.Load<GameObject>("Prefabs/Player")).GetComponent<PlayerController>();
             }
             player.Init();
         }
@@ -42,19 +42,19 @@ public class GameManager : MonoBehaviour
         }
         if (build == null)
         {
-            build = FindAnyObjectByType<Builder>();
+            build = FindAnyObjectByType<BuildController>();
             if (build == null)
             {
-                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<Builder>();
+                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<BuildController>();
             }
             build.Init();
         }
         if (mouse == null)
         {
-            mouse = FindAnyObjectByType<MouseControllerEx>();
+            mouse = FindAnyObjectByType<MouseController>();
             if (mouse == null)
             {
-                mouse = Instantiate(Resources.Load<GameObject>("Prefabs/Mouse")).GetComponent<MouseControllerEx>();
+                mouse = Instantiate(Resources.Load<GameObject>("Prefabs/Mouse")).GetComponent<MouseController>();
             }
             mouse.Init();
         }
@@ -80,9 +80,9 @@ public class GameManager : MonoBehaviour
     }
 
     public TowerController tower;
-    public PlayerControllerEx player;
-    public Builder build;
-    public MouseControllerEx mouse;
+    public PlayerController player;
+    public BuildController build;
+    public MouseController mouse;
     public GridManager grid;
 
     public TimeType timeType = TimeType.Morning;

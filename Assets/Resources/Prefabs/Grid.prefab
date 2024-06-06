@@ -11456,4 +11456,4 @@ MonoBehaviour:
   walls: {fileID: 0}
   matter: {fileID: 0}
   building: {fileID: 0}
-  banTile: {fileID: 0}
+  banTile: {fileID: 11400000, guid: 1660ed5ca32decb40a89f9591ad30d0c, type: 2}

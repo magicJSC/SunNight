@@ -5,12 +5,13 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
 
-public class Builder : MonoBehaviour
+public class BuildController : MonoBehaviour
 {
     public InvenManager.ItemInfo info;
 
+    [HideInInspector]
     public GameObject sample;
-
+    [HideInInspector]
     public bool canBuild;
     private void Start()
     {
@@ -78,7 +79,7 @@ public class Builder : MonoBehaviour
             return;
 
         Vector2 tower = Managers.Game.tower.transform.position; //기지 위치 받아오기
-        if (Managers.Game.grid.CheckCanBuild(new Vector3Int((int)(transform.position.x), (int)(transform.position.y), 0)))
+        if (!Managers.Game.grid.CheckCanBuild(new Vector3Int((int)(transform.position.x), (int)(transform.position.y), 0)))
             return;
         Managers.Game.tower.build.SetTile(new Vector3Int((int)(transform.position.x - tower.x), (int)(transform.position.y - tower.y), 0), info.tile);
         Managers.Inven.hotBar_itemInfo[Managers.Inven.hotBar_choice].count--;

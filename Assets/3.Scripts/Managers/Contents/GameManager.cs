@@ -42,10 +42,10 @@ public class GameManager : MonoBehaviour
         }
         if (build == null)
         {
-            build = FindAnyObjectByType<Builder>();
+            build = FindAnyObjectByType<BuildController>();
             if (build == null)
             {
-                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<Builder>();
+                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<BuildController>();
             }
             build.Init();
         }
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
 
     public TowerController tower;
     public PlayerController player;
-    public Builder build;
+    public BuildController build;
     public MouseController mouse;
     public GridManager grid;
 

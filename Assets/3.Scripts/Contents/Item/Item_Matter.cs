@@ -13,7 +13,7 @@ public class Item_Matter : Item
     private void Start()
     {
         s = GetComponent<SpriteRenderer>();
-        Managers.Game.grid.banBuild.SetTile(new Vector3Int((int)transform.position.x, (int)transform.position.y), Managers.Game.grid.banTile);
+        Managers.Game.grid.matter.SetTile(new Vector3Int((int)transform.position.x, (int)transform.position.y), Managers.Game.grid.matterTile);
         origin = s.sprite;
         take = itemIcon;
     }
@@ -30,7 +30,7 @@ public class Item_Matter : Item
 
     public void DestroyThis()
     {
-        Managers.Game.grid.banBuild.SetTile(new Vector3Int((int)transform.position.x, (int)transform.position.y), null);
+        Managers.Game.grid.matter.SetTile(new Vector3Int((int)transform.position.x, (int)transform.position.y), null);
         Destroy(gameObject);
     }
 }

@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class MouseController : UI_Base
 {
     //¸¶¿ì½º
+    [HideInInspector]
     public GameObject _icon;
+    [HideInInspector] 
     public GameObject _count;
 
     enum GameObjects

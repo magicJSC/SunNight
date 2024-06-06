@@ -13,12 +13,11 @@ public class Item_Buliding : Item
         itemType = Define.ItemType.Building;
         pos = transform.position - Managers.Game.tower.transform.position;
         Managers.Game.buildData.Add(pos, id);
-        Managers.Game.grid.banBuild.SetTile(new Vector3Int((int)pos.x,(int)pos.y,0), Managers.Game.grid.banTile);
     }
 
     public void DeleteBuilding()
     {
-        Managers.Game.tower.build.SetTile(new Vector3Int((int)pos.x,(int)pos.y,0),null);
+        Managers.Game.grid.build.SetTile(new Vector3Int((int)pos.x,(int)pos.y,0),null);
         Managers.Game.buildData.Remove(pos);
     }
 }

@@ -16,8 +16,7 @@ public class TowerController : MonoBehaviour
     {
         Managers.Game.tower = this;
         build = Util.FindChild(gameObject,"Building",true).GetComponent<Tilemap>();
-        Managers.Game.grid.banBuild = Util.FindChild(gameObject, "BanBuild", true).GetComponent<Tilemap>();
-        Managers.Game.grid.banTile = Managers.Game.grid.banBuild.GetTile(Vector3Int.zero);
+        Managers.Game.grid.building = build;
         playerLayer = 6;
         buildLayer.value = 9;
         inviLayer.value = 8;

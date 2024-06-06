@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,10 +32,9 @@ public class UI_Inven_Key : UI_Base
         UI_EventHandler evt = GetComponent<UI_EventHandler>();
         evt._OnDown += (PointerEventData p) => 
         {
-            if (p.button != PointerEventData.InputButton.Left)
+            if (Game.inven_itemInfo[keyId].keyType == Define.KeyType.Empty)
                 return;
-            if (Inven.inven_itemInfo[keyId].keyType == Define.KeyType.Empty)
-                return;
+            
             Game.mouse.CursorType = Define.CursorType.Drag;
             Game.mouse.Set_Mouse_ItemIcon(icon,count);
         };
@@ -44,15 +42,11 @@ public class UI_Inven_Key : UI_Base
         {
             if (Game.mouse.CursorType != Define.CursorType.Drag)
                 return;
-            Inven.changeSpot.index = keyId;
-            Inven.changeSpot.invenType = Define.InvenType.Inven;
+            Game.changeSpot.index = keyId;
+            Game.changeSpot.invenType = Define.InvenType.Inven;
         };
         evt._OnUp += (PointerEventData p) => 
         {
-            if (p.button != PointerEventData.InputButton.Left)
-                return;
-            if (Inven.inven_itemInfo[keyId].keyType == Define.KeyType.Empty)
-                return;
             Define.DropType drop = Drop();
             switch (drop)
             {
@@ -74,35 +68,28 @@ public class UI_Inven_Key : UI_Base
         evt._OnExit += (PointerEventData p) =>
         {
             if (Game.mouse.CursorType == Define.CursorType.Drag)
-             Inven.changeSpot.invenType = Define.InvenType.None;
+             Game.changeSpot.invenType = Define.InvenType.None;
         };
     }
 
     public void SetIcon()
     {
-        if (Inven.inven_itemInfo[keyId].id == 0)
-        {
-            EmptyKey();
-            return;
-        }
-        icon.sprite = Inven.inven_itemInfo[keyId].icon; 
-        count.text = Inven.inven_itemInfo[keyId].count.ToString();
+        icon.sprite = Game.inven_itemInfo[keyId].icon; 
+        count.text = Game.inven_itemInfo[keyId].count.ToString();
 
         count.gameObject.SetActive(true);
         icon.gameObject.SetActive(true);
-        if (Inven.inven_itemInfo[keyId].itemType == Define.ItemType.Tool)
+        if (Game.inven_itemInfo[keyId].itemType == Define.ItemType.Tool)
           count.gameObject.SetActive(false);
     }
 
     public void EmptyKey()  //키 비어있게 만들기
     {
         HideIcon();
-        Inven.inven_itemInfo[keyId].keyType = Define.KeyType.Empty;
-        Inven.inven_itemInfo[keyId].itemType = Define.ItemType.None;
-        Inven.inven_itemInfo[keyId].count = 0;
-        Inven.inven_itemInfo[keyId].id = 0;
-        count.gameObject.SetActive(false);
-        icon.gameObject.SetActive(false);
+        Game.inven_itemInfo[keyId].keyType = Define.KeyType.Empty;
+        Game.inven_itemInfo[keyId].itemType = Define.ItemType.None;
+        Game.inven_itemInfo[keyId].count = 0;
+        Game.inven_itemInfo[keyId].id = 0;
     }
 
     public void HideIcon()
@@ -119,20 +106,22 @@ public class UI_Inven_Key : UI_Base
 
     Define.DropType Drop()
     {
-        if (Inven.changeSpot.invenType == Define.InvenType.None)
-            return Define.DropType.Return;
-        if (Inven.changeSpot.invenType == Define.InvenType.Inven)
+        if (Game.changeSpot.invenType == Define.InvenType.Inven)
         {
-            if (Inven.inven_itemInfo[Inven.changeSpot.index].id == Inven.inven_itemInfo[keyId].id)
+            if (Game.changeSpot.invenType == Define.InvenType.None)
+                return Define.DropType.Return;
+            else if (Game.inven_itemInfo[Game.changeSpot.index].id == Game.inven_itemInfo[keyId].id)
                 return Define.DropType.Add;
-            else if (Inven.inven_itemInfo[Inven.changeSpot.index].keyType == Define.KeyType.Empty)
+            else if (Game.inven_itemInfo[Game.changeSpot.index].keyType == Define.KeyType.Empty)
                 return Define.DropType.Move;
         }
         else
         {
-            if (Inven.hotBar_itemInfo[Inven.changeSpot.index].id == Inven.inven_itemInfo[keyId].id)
+            if (Game.changeSpot.invenType == Define.InvenType.None)
+                return Define.DropType.Return;
+            else if (Game.hotBar_itemInfo[Game.changeSpot.index].id == Game.inven_itemInfo[keyId].id)
                 return Define.DropType.Add;
-            else if (Inven.hotBar_itemInfo[Inven.changeSpot.index].keyType == Define.KeyType.Empty)
+            else if (Game.hotBar_itemInfo[Game.changeSpot.index].keyType == Define.KeyType.Empty)
                 return Define.DropType.Move;
         }
 
@@ -141,57 +130,52 @@ public class UI_Inven_Key : UI_Base
 
     public void ChangeItemSpot()
     {
-        if (Inven.changeSpot.invenType == Define.InvenType.None)
+        if (Managers.Game.changeSpot.invenType == Define.InvenType.None)
            ShowIcon();
         //키 자신의 값
-        int id = Inven.inven_itemInfo[keyId].id;
-        int count = Inven.inven_itemInfo[keyId].count;
-        if (Inven.changeSpot.invenType == Define.InvenType.Inven)
+        int id = Managers.Game.inven_itemInfo[keyId].id;
+        int count = Managers.Game.inven_itemInfo[keyId].count;
+        if (Managers.Game.changeSpot.invenType == Define.InvenType.Inven)
         {
-            Inven.inven.Set_Inven_Info(keyId, Inven.inven_itemInfo[Inven.changeSpot.index].id, Inven.inven_itemInfo[Inven.changeSpot.index].count);
-            Inven.inven.Set_Inven_Info(Inven.changeSpot.index, id, count);
+            Managers.Game.inven.Set_Inven_Info(keyId, Managers.Game.inven_itemInfo[Managers.Game.changeSpot.index].id, Managers.Game.inven_itemInfo[Managers.Game.changeSpot.index].count);
+            Managers.Game.inven.Set_Inven_Info(Managers.Game.changeSpot.index, id, count);
         }
         else
         {
-            Inven.inven.Set_Inven_Info(keyId, Inven.hotBar_itemInfo[Inven.changeSpot.index].id, Inven.hotBar_itemInfo[Inven.changeSpot.index].count);
-            Inven.hotBar.Set_HotBar_Info(Inven.changeSpot.index, id, count);
+            Managers.Game.inven.Set_Inven_Info(keyId, Managers.Game.hotBar_itemInfo[Managers.Game.changeSpot.index].id, Managers.Game.hotBar_itemInfo[Managers.Game.changeSpot.index].count);
+            Managers.Game.hotBar.Set_HotBar_Info(Managers.Game.changeSpot.index, id, count);
         }
     }
 
-    void MoveItemSpot() 
+    void MoveItemSpot()
     {
-        int id = Inven.inven_itemInfo[keyId].id;
-        int count = Inven.inven_itemInfo[keyId].count;
-        if (Inven.changeSpot.invenType == Define.InvenType.Inven)
+        int id = Managers.Game.inven_itemInfo[keyId].id;
+        int count = Managers.Game.inven_itemInfo[keyId].count;
+        if (Managers.Game.changeSpot.invenType == Define.InvenType.Inven)
         {
-            Inven.inven.Set_Inven_Info(keyId, 0, 0);
-            Inven.inven.Set_Inven_Info(Inven.changeSpot.index, id, count);
+            Managers.Game.inven.Set_Inven_Info(keyId, 0, 0);
+            Managers.Game.inven.Set_Inven_Info(Managers.Game.changeSpot.index, id, count);
         }
         else
         {
-            Inven.inven.Set_Inven_Info(keyId, 0, 0);
-            Inven.hotBar.Set_HotBar_Info(Inven.changeSpot.index, id, count);
+            Managers.Game.inven.Set_Inven_Info(keyId, 0, 0);
+            Managers.Game.hotBar.Set_HotBar_Info(Managers.Game.changeSpot.index, id, count);
         }
     }
 
     void CombineItem()
     {
-        int id = Inven.inven_itemInfo[keyId].id;
-        int count = Inven.inven_itemInfo[keyId].count;
-        int sum = 0;
-        if (Inven.changeSpot.invenType == Define.InvenType.Inven)
+        int id = Managers.Game.inven_itemInfo[keyId].id;
+        int count = Managers.Game.inven_itemInfo[keyId].count;
+        if (Managers.Game.changeSpot.invenType == Define.InvenType.Inven)
         {
-            if (count + Inven.inven_itemInfo[Inven.changeSpot.index].count > 99)
-                sum = count + Inven.inven_itemInfo[Inven.changeSpot.index].count - 99;
-            Inven.inven.Set_Inven_Info(Inven.changeSpot.index, id, count + Inven.inven_itemInfo[Inven.changeSpot.index].count - sum);
-            Inven.inven.Set_Inven_Info(keyId, id, sum);
+            Managers.Game.inven.Set_Inven_Info(keyId, 0, 0);
+            Managers.Game.inven.Set_Inven_Info(Managers.Game.changeSpot.index, id, count + Managers.Game.inven_itemInfo[Managers.Game.changeSpot.index].count);
         }
         else
         {
-            if (count + Inven.hotBar_itemInfo[Inven.changeSpot.index].count > 99)
-                sum = count + Inven.hotBar_itemInfo[Inven.changeSpot.index].count - 99;
-            Inven.hotBar.Set_HotBar_Info(Inven.changeSpot.index, id, count + Inven.hotBar_itemInfo[Inven.changeSpot.index].count -sum);
-            Inven.inven.Set_Inven_Info(keyId, id, sum);
+            Managers.Game.inven.Set_Inven_Info(keyId, 0, 0);
+            Managers.Game.hotBar.Set_HotBar_Info(Managers.Game.changeSpot.index, id, count + Managers.Game.hotBar_itemInfo[Managers.Game.changeSpot.index].count);
         }
     }
 }

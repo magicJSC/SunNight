@@ -69,18 +69,12 @@ public class Define : MonoBehaviour
         Inven,
         HotBar
     }
+
     public enum DropType
     {
         Add,
         Change,
         Return,
         Move
-    }
-
-    public enum TurretType
-    {
-        Ground,
-        Sky,
-        All
     }
 }

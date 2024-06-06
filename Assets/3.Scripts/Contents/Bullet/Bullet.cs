@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
             {
                 col.GetComponent<Item_Buliding>().DeleteBuilding();
             }
-            else if (col.GetComponent<TowerController>())
+            else if (col.GetComponent<Tower>())
             {
                 Debug.Log("±âÁö ÆÄ±«");
             }

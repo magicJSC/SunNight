@@ -6,9 +6,7 @@ using UnityEngine.UI;
 public class MouseController : UI_Base
 {
     //¸¶¿ì½º
-    [HideInInspector]
     public GameObject _icon;
-    [HideInInspector]
     public GameObject _count;
 
     enum GameObjects
@@ -17,6 +15,7 @@ public class MouseController : UI_Base
         Count
     }
 
+    bool _init = false;
 
     public override void Init()
     {
@@ -27,11 +26,6 @@ public class MouseController : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         _icon = Get<GameObject>((int)GameObjects.Icon);
         _count = Get<GameObject>((int)GameObjects.Count);
-    }
-
-    private void OnEnable()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 10);
     }
 
     private void Update()

@@ -48,4 +48,10 @@ public class Connector
             Debug.Log($"OnConnectCompleted Fail: {args.SocketError}");
         }
     }
+
+    public void Disconnect()
+    {
+        Session session = _sessionFactory.Invoke();
+        session.Disconnect();
+    }
 }

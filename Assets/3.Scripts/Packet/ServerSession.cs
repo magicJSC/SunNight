@@ -19,7 +19,7 @@ public class ServerSession : PacketSession
 
     public override void OnDisconnected(EndPoint endPoint)
     {
-        Debug.Log($"DisConnected : {endPoint}");
+        Debug.Log($"OnDisConnected : {endPoint}");
     }
 
     public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -32,8 +32,6 @@ public class ServerSession : PacketSession
 
         session.SetPacketId((Protocol.PacketId)protocolId);
         PacketId id = session.GetPacketId();
-
-        Debug.Log($"PacketId : {id}");
 
         PktHandler(buffer, id);
     }

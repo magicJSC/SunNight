@@ -11,9 +11,7 @@ public class Managers : MonoBehaviour
     GameManager _game = new GameManager();
     ObjectMananger _obj = new ObjectMananger();
     NetworkManager _network = new NetworkManager();
-    InvenManager _inven = new InvenManager();
 
-    public static InvenManager Inven { get { return Instance._inven; } }
     public static ObjectMananger Object { get { return Instance._obj; } }
     public static NetworkManager Network { get { return Instance._network; } }
     public static GameManager Game { get { return Instance._game; } }
@@ -40,7 +38,6 @@ public class Managers : MonoBehaviour
             instance = go.GetComponent<Managers>();
 
             instance._network.Init();
-            instance._inven.Init();
             instance._game.Init();
         }
     }

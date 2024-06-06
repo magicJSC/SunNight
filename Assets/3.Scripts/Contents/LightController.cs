@@ -10,7 +10,7 @@ public class LightController : MonoBehaviour
     Color night;
    
     float colorTime =0;
-    public void Init()
+    private void Start()
     {
         lights = GetComponent<Light2D>();
         lights.color = Color.white;

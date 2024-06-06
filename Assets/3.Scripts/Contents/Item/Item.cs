@@ -10,4 +10,14 @@ public class Item : MonoBehaviour
     public Define.ItemType itemType;
     public TileBase tile;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6 && itemType != Define.ItemType.Building)
+        {
+            Managers.Game.AddItem(id);
+            Destroy(gameObject);
+        }
+    }
+
+
 }

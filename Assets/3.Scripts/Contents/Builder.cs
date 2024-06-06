@@ -63,6 +63,8 @@ public class Builder : MonoBehaviour
 
        if(info.itemType == ItemType.Building)
         {
+            Managers.Input.mouse0Act -= DrawTile;
+            Managers.Input.mouse1Act -= DeleteTile;
             Managers.Input.mouse0Act += DrawTile;
             Managers.Input.mouse1Act += DeleteTile;
         }
@@ -78,8 +80,15 @@ public class Builder : MonoBehaviour
             return;
 
         Vector2 tower = Managers.Game.tower.transform.position; //기지 위치 받아오기
-        if (Managers.Game.grid.CheckCanBuild(new Vector3Int((int)(transform.position.x), (int)(transform.position.y), 0)))
+
+        //설치를 할 수 있으면 true, 없으면 false
+        if (!Managers.Game.grid.CheckCanBuild(new Vector3Int((int)(transform.position.x), (int)(transform.position.y), 0)))
+        {
+            //건축물 선택
+            ChoiceBuild(new Vector3Int((int)(transform.position.x), (int)(transform.position.y), 0));
             return;
+        }
+   
         Managers.Game.tower.build.SetTile(new Vector3Int((int)(transform.position.x - tower.x), (int)(transform.position.y - tower.y), 0), info.tile);
         Managers.Inven.hotBar_itemInfo[Managers.Inven.hotBar_choice].count--;
         if(Managers.Inven.hotBar_itemInfo[Managers.Inven.hotBar_choice].count <=0)
@@ -96,13 +105,19 @@ public class Builder : MonoBehaviour
             return;
 
         Vector2 tower = Managers.Game.tower.transform.position; //기지 위치 받아오기
-        GameObject go = Managers.Game.tower.build.GetInstantiatedObject(new Vector3Int((int)(transform.position.x - tower.x), (int)(transform.position.y - tower.y), 0));
+        GameObject go = Managers.Game.grid.building.GetInstantiatedObject(new Vector3Int((int)(transform.position.x - tower.x), (int)(transform.position.y - tower.y), 0));
         if (go != null)
         {
             Managers.Inven.AddItem(go.GetComponent<Item>().id);
             Managers.Inven.Set_HotBar_Choice();
             go.GetComponent<Item_Buliding>().DeleteBuilding();
         }
+    }
+
+    void ChoiceBuild(Vector3Int pos)
+    {
+        Vector2 towerPos = Managers.Game.tower.transform.position;
+        GameObject go = Managers.Game.grid.building.GetInstantiatedObject(new Vector3Int(pos.x - (int)towerPos.x,pos.y - (int)towerPos.y));
     }
 
     public void ShowBuildSample()

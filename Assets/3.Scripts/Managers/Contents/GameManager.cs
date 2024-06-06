@@ -6,7 +6,7 @@ using static Define;
 
 public class GameManager : MonoBehaviour
 {
-    #region °ÔÀÓ µ¥ÀÌÅÍ
+    #region ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public ItemInfo[] hotBar_itemInfo = new ItemInfo[5];
     public ItemInfo[] inven_itemInfo = new ItemInfo[24];
 
@@ -28,9 +28,9 @@ public class GameManager : MonoBehaviour
                 keyType = KeyType.Empty;
                 return;
             }
-            Item i = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id¿¡ µû¸¥ ¾ÆÀÌÅÛ Á¤º¸
+            Item i = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //idï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (i == null)
-                Debug.Log($"id°¡ {id}ÀÎ ¾ÆÀÌÅÛÀº ¾ø½À´Ï´Ù");
+                Debug.Log($"idï¿½ï¿½ {id}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
             keyType = KeyType.Exist;
             this.id = id;
             itemType = i.itemType;
@@ -74,19 +74,21 @@ public class GameManager : MonoBehaviour
         }
         if (build == null)
         {
-            build = FindAnyObjectByType<Builder>();
+            build = FindAnyObjectByType<BuildController>();
             if (build == null)
             {
-                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<Builder>();
+                build = Instantiate(Resources.Load<GameObject>("Prefabs/Builder")).GetComponent<BuildController>();
             }
             build.Init();
         }
         if (tower == null)
         {
+
             tower = FindAnyObjectByType<Tower>();
             if (tower == null)
             {
                 tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
+
             }
             tower.Init();
         }
@@ -114,22 +116,23 @@ public class GameManager : MonoBehaviour
         SetTime();
     }
 
-    public Tower tower;
+    public TowerController tower;
     public PlayerController player;
-    public Builder build;
+    public BuildController build;
     public MouseController mouse;
-    
+    public GridManager grid;
 
-    #region ÀÎº¥Åä¸®
+
+    #region ï¿½Îºï¿½ï¿½ä¸®
     public UI_HotBar hotBar;
 
     public int hotBar_choice = 0;
     public int HotBar_Choice { get { return hotBar_choice; } set { hotBar_choice = value; Set_HotBar_Choice(); } }
 
-    //¼±ÅÃÇÑ °ª¿¡ µû¶ó ´Ù¸£°Ô ½ÇÇà
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void Set_HotBar_Choice()
     {
-        //´Þ¶óÁø °ªÀ» °¡Á®¿À°Ô ÇÑ´Ù
+        //ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½
         build.SetInfo();
         if (player.toolParent.transform.childCount != 0)
             Destroy(player.toolParent.transform.GetChild(0).gameObject);
@@ -165,7 +168,7 @@ public class GameManager : MonoBehaviour
 
     bool Add_Item_HotBar(Item item, int count = 1)
     {
-        if (item.itemType != ItemType.Tool)   //Àç·á ¾ÆÀÌÅÛÀÏ¶§
+        if (item.itemType != ItemType.Tool)   //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
         {
             int empty = -1;
             for (int i = 0; i < hotBar_itemInfo.Length - 1; i++)
@@ -181,7 +184,7 @@ public class GameManager : MonoBehaviour
                         empty = i;
                 }
             }
-            //Ãß°¡ ÇÏÁö ¸øÇß´Ù¸é ºñ¾îÀÖ´Â Ä­¿¡ ³Ö±â
+            //ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ Ä­ï¿½ï¿½ ï¿½Ö±ï¿½
             if (empty != -1)
             {
                 hotBar.Set_HotBar_Info(empty, item.id, hotBar_itemInfo[empty].count + count);
@@ -190,7 +193,7 @@ public class GameManager : MonoBehaviour
 
             return false;
         }
-        else //µµ±¸ ¾ÆÀÌÅÛÀÏ¶§
+        else //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
         {
             for (int i = 0; i < hotBar_itemInfo.Length - 1; i++)
             {
@@ -206,7 +209,7 @@ public class GameManager : MonoBehaviour
 
     bool Add_Item_Inven(Item item, int count = 1)
     {
-        if (item.itemType != ItemType.Tool)   //Àç·á ¾ÆÀÌÅÛÀÏ¶§
+        if (item.itemType != ItemType.Tool)   //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
         {
             int empty = -1;
             for (int i = 0; i < inven_itemInfo.Length - 1; i++)
@@ -222,17 +225,17 @@ public class GameManager : MonoBehaviour
                         empty = i;
                 }
             }
-            //Ãß°¡ ÇÏÁö ¸øÇß´Ù¸é ºñ¾îÀÖ´Â Ä­¿¡ ³Ö±â
+            //ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ Ä­ï¿½ï¿½ ï¿½Ö±ï¿½
             if (empty != -1)
             {
                 inven.Set_Inven_Info(empty, item.id, inven_itemInfo[empty].count + count);
                 return true;
             }
 
-            //Ãß°¡ ÇÏÁö ¸øÇß´Âµ¥ ºñ¾îÀÖ´Â Ä­µµ ¾øÀ»¶§
+            //ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´Âµï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             return Add_Item_HotBar(item, count);
         }
-        else //µµ±¸ ¾ÆÀÌÅÛÀÏ¶§
+        else //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
         {
             for (int i = 0; i < inven_itemInfo.Length - 1; i++)
             {
@@ -249,7 +252,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public UI_Inven inven;
-    public (int index, InvenType invenType) changeSpot; //µÎ¹øÂ°¿¡ ¹Þ¾Æ¿À´Â °ªµé
+    public (int index, InvenType invenType) changeSpot; //ï¿½Î¹ï¿½Â°ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
    
     public TimeType timeType = TimeType.Morning;

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
 
-public class Builder : MonoBehaviour
+public class BuildController : MonoBehaviour
 {
     public GameManager.ItemInfo info;
 
@@ -109,6 +109,16 @@ public class Builder : MonoBehaviour
         }
     }
 
+<<<<<<<< HEAD:Assets/3.Scripts/Contents/BuildController.cs
+    //강화 할수 있는 UI 생성
+    void ChoiceBuild(Vector3Int pos)
+    {
+        Vector2 towerPos = Managers.Game.tower.transform.position;
+        GameObject go = Managers.Game.grid.building.GetInstantiatedObject(new Vector3Int(pos.x - (int)towerPos.x,pos.y - (int)towerPos.y));
+    }
+
+========
+>>>>>>>> main:Assets/3.Scripts/Contents/Player/Builder.cs
     public void ShowBuildSample()
     {
         //아이템이 설치 아이템일때

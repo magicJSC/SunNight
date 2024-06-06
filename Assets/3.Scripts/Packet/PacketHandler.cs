@@ -19,6 +19,9 @@ class PacketHandler
     {
         S_LEAVE_GAME leaveGamePacket = packet as S_LEAVE_GAME;
         ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_LeaveGameHandler");
+        Debug.Log(leaveGamePacket);
     }
 
     public static void SSpawnHandler(PacketSession session, IMessage packet)
@@ -27,12 +30,16 @@ class PacketHandler
         ServerSession serverSession = session as ServerSession;
 
         Debug.Log("S_SpawnHandler");
+        Debug.Log(spawnPacket.Players);
     }
 
     public static void SDespawnHandler(PacketSession session, IMessage packet)
     {
         S_DESPAWN spawnPacket = packet as S_DESPAWN;
         ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_DespawnHandler");
+        Debug.Log(spawnPacket);
     }
 
     public static void SMoveHandler(PacketSession session, IMessage packet)

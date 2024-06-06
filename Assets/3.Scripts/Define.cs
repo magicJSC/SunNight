@@ -69,7 +69,6 @@ public class Define : MonoBehaviour
         Inven,
         HotBar
     }
-
     public enum DropType
     {
         Add,

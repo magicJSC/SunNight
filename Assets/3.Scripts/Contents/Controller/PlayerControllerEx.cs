@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerController : MonoBehaviour
+public class PlayerControllerEx : MonoBehaviour
 {
     [SerializeField] float speed;
     Rigidbody2D rigid;
-    public UI_HotBar hotBar;
 
+    [HideInInspector]
+    public UI_HotBar hotBar;
+    [HideInInspector]
     public GameObject toolParent;
 
     List<GameObject> matters = new List<GameObject>();

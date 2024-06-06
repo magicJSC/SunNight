@@ -59,7 +59,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.12116076, w: 0.9926329}
   m_LocalPosition: {x: 1.700158, y: 1.0529664, z: 0}
-  m_LocalScale: {x: 1.4285711, y: 1.428571, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7348767549176135091}
@@ -125,8 +125,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7348767549176135091}
-  - component: {fileID: 2749871334895259860}
   - component: {fileID: 6559034486268363755}
+  - component: {fileID: -892860038658059962}
   - component: {fileID: 5033025128389586287}
   m_Layer: 6
   m_Name: 4
@@ -152,20 +152,6 @@ Transform:
   - {fileID: 4687335118903099376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2749871334895259860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6174246859296827979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2daaed71bdd5fb64498ec7de616d719f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  size: {x: 1.5, y: 1.5}
-  _damage: 10
 --- !u!114 &6559034486268363755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +168,20 @@ MonoBehaviour:
   id: 4
   itemType: 2
   tile: {fileID: 0}
+--- !u!114 &-892860038658059962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6174246859296827979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114e18e42b4d4e042b412b94009088cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: {x: 1.5, y: 1.5}
+  _damage: 10
 --- !u!95 &5033025128389586287
 Animator:
   serializedVersion: 5
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 1638512547782497891}
   - component: {fileID: 7149648164200156556}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: Tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +275,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 1
   m_Sprite: {fileID: -157942333, guid: c7198cf7fc0cfb54b90a8ffeefc122cf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1

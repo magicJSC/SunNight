@@ -71,7 +71,8 @@ public class UI_HotBar : UI_Base
         int a =5;
         Managers.Inven.hotBar_itemInfo[0] = new InvenManager.ItemInfo(3, 10);
         Managers.Inven.hotBar_itemInfo[1] = new InvenManager.ItemInfo(4, 1);
-        for(int i = 2; i < a; i++)
+        Managers.Inven.hotBar_itemInfo[2] = new InvenManager.ItemInfo(5, 3);
+        for(int i = 3; i < a; i++)
         {
             Managers.Inven.hotBar_itemInfo[i] = new InvenManager.ItemInfo(0, 0);
         }
@@ -86,7 +87,7 @@ public class UI_HotBar : UI_Base
     //아이템 정보를 넣어줌
     public void Set_HotBar_Info(int key_index, int id, int count)
     {
-        if(id == 0)
+        if(id == 0 || count == 0)
         {
             keys[key_index].GetComponent<UI_HotBar_Key>().EmptyKey();
             return;
@@ -94,11 +95,6 @@ public class UI_HotBar : UI_Base
 
         Item item = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id에 따른 아이템 정보
 
-        if (count > 99)
-        {
-            Managers.Inven.AddItem(id, count - 99);
-            count = 99;
-        }
         Managers.Inven.hotBar_itemInfo[key_index].id = id;
         Managers.Inven.hotBar_itemInfo[key_index].itemType = item.itemType;
         Managers.Inven.hotBar_itemInfo[key_index].count = count;

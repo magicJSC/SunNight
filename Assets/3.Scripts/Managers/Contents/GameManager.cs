@@ -33,10 +33,10 @@ public class GameManager : MonoBehaviour
         }
         if (tower == null)
         {
-            tower = FindAnyObjectByType<Tower>();
+            tower = FindAnyObjectByType<TowerController>();
             if (tower == null)
             {
-                tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<Tower>();
+                tower = Instantiate(Resources.Load<GameObject>("Prefabs/Tower")).GetComponent<TowerController>();
             }
             tower.Init();
         }
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         SetTime();
     }
 
-    public Tower tower;
+    public TowerController tower;
     public PlayerController player;
     public Builder build;
     public MouseController mouse;

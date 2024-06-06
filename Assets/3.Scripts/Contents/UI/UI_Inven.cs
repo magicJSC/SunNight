@@ -85,7 +85,7 @@ public class UI_Inven : UI_Base
 
     public void Set_Inven_Info(int key_index, int id, int count)
     {
-        if (id == 0)
+        if (id == 0 || count ==0)
         {
             keys[key_index].GetComponent<UI_Inven_Key>().EmptyKey();
             return;
@@ -95,12 +95,6 @@ public class UI_Inven : UI_Base
 
         Managers.Inven.inven_itemInfo[key_index].id = id;
         Managers.Inven.inven_itemInfo[key_index].itemType = item.itemType;
-
-        if(count > 99)
-        {
-            Managers.Inven.AddItem(id,count - 99);
-            count = 99;
-        }
         Managers.Inven.inven_itemInfo[key_index].count = count;
         Managers.Inven.inven_itemInfo[key_index].icon = item.itemIcon;
         if (Managers.Inven.inven_itemInfo[key_index].itemType == Define.ItemType.Building)   //건설 아이템은 타일을 따로 가지고 있는다

@@ -77,4 +77,11 @@ public class Define : MonoBehaviour
         Return,
         Move
     }
+
+    public enum TurretType
+    {
+        Ground,
+        Sky,
+        All
+    }
 }

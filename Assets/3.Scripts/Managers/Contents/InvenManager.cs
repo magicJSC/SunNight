@@ -24,6 +24,7 @@ public class InvenManager : MonoBehaviour
             if (id == 0)
             {
                 this.id = id;
+                this.count = 0;
                 keyType = KeyType.Empty;
                 return;
             }

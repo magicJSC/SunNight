@@ -11322,7 +11322,7 @@ Tilemap:
   m_TileColorArray: []
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
   m_TileAnchor: {x: 0, y: 0, z: 0}
@@ -11403,7 +11403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3112712763788155272}
   - component: {fileID: 5483604252504869537}
-  - component: {fileID: 6905591713255143448}
+  - component: {fileID: 1626361258246263583}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -11441,7 +11441,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &6905591713255143448
+--- !u!114 &1626361258246263583
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11450,10 +11450,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6578429924224455650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f9a16fd25a9d8f4c8e8c153bca7653b, type: 3}
+  m_Script: {fileID: 11500000, guid: ae144e823db56f7429eee13a20f71d99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   walls: {fileID: 0}
   matter: {fileID: 0}
   building: {fileID: 0}
-  banTile: {fileID: 11400000, guid: 1660ed5ca32decb40a89f9591ad30d0c, type: 2}
+  banTile: {fileID: 11400000, guid: d1a32535618d92947a9ed677bb8c6fc1, type: 2}

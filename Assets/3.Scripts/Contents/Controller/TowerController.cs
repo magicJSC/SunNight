@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Tower : MonoBehaviour
+public class TowerController : MonoBehaviour
 {
     bool canHold = false;
     LayerMask playerLayer;
     LayerMask buildLayer;
     LayerMask inviLayer;
 
-    public Tilemap tilemap;
+    [HideInInspector]
+    public Tilemap build;
 
     public void Init()
     {
         Managers.Game.tower = this;
-        tilemap = Util.FindChild(gameObject,"Building",true).GetComponent<Tilemap>();
+        build = Util.FindChild(gameObject,"Building",true).GetComponent<Tilemap>();
+        Managers.Game.grid.building = build;
+        Camera.main.GetComponent<CameraController>().target = transform;
         playerLayer = 6;
         buildLayer.value = 9;
         inviLayer.value = 8;
@@ -28,25 +31,25 @@ public class Tower : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F) && canHold)
         {
-            Managers.Game.hotBar.GetTower();
+            Managers.Inven.hotBar.GetTower();
         }
     }
 
     public void ChangeInvisable()
     {
         gameObject.layer = inviLayer;
-        for (int i = 0; i < tilemap.transform.childCount; i++)
+        for (int i = 0; i < build.transform.childCount; i++)
         {
-            tilemap.transform.GetChild(i).gameObject.layer = inviLayer;
+            build.transform.GetChild(i).gameObject.layer = inviLayer;
         }
     }
 
     public void ChangeVisable()
     {
         gameObject.layer = buildLayer;
-        for (int i = 0; i < tilemap.transform.childCount; i++)
+        for (int i = 0; i < build.transform.childCount; i++)
         {
-            tilemap.transform.GetChild(i).gameObject.layer = buildLayer;
+            build.transform.GetChild(i).gameObject.layer = buildLayer;
         }
     }
 

@@ -47,7 +47,7 @@ public class UI_Inven : UI_Base
         {
             if (Managers.Game.mouse.CursorType == Define.CursorType.Drag)
                 return;
-            Managers.Game.Set_HotBar_Choice();
+            Managers.Inven.Set_HotBar_Choice();
         };
 
         evt = hide.GetComponent<UI_EventHandler>();
@@ -60,15 +60,15 @@ public class UI_Inven : UI_Base
 
     void GetData()
     {
-        for (int i = 0; i < Managers.Game.inven_itemInfo.Length; i++)
+        for (int i = 0; i < Managers.Inven.inven_itemInfo.Length; i++)
         {
-            Managers.Game.inven_itemInfo[i] = new GameManager.ItemInfo(1,10);
+            Managers.Inven.inven_itemInfo[i] = new InvenManager.ItemInfo(1,10);
         }
     }
 
     void MakeKeys()
     {
-        for (int i = 0; i < Managers.Game.inven_itemInfo.Length; i++)
+        for (int i = 0; i < Managers.Inven.inven_itemInfo.Length; i++)
         {
             GameObject go = Instantiate(Resources.Load<GameObject>("UI/UI_Inven/UI_Inven_Key"), grid.transform);
             keys.Add(go);
@@ -93,19 +93,19 @@ public class UI_Inven : UI_Base
 
         Item item = Resources.Load<GameObject>($"Prefabs/Items/{id}").GetComponent<Item>(); //id에 따른 아이템 정보
 
-        Managers.Game.inven_itemInfo[key_index].id = id;
-        Managers.Game.inven_itemInfo[key_index].itemType = item.itemType;
+        Managers.Inven.inven_itemInfo[key_index].id = id;
+        Managers.Inven.inven_itemInfo[key_index].itemType = item.itemType;
 
         if(count > 99)
         {
-            Managers.Game.AddItem(id,count - 99);
+            Managers.Inven.AddItem(id,count - 99);
             count = 99;
         }
-        Managers.Game.inven_itemInfo[key_index].count = count;
-        Managers.Game.inven_itemInfo[key_index].icon = item.itemIcon;
-        if (Managers.Game.inven_itemInfo[key_index].itemType == Define.ItemType.Building)   //건설 아이템은 타일을 따로 가지고 있는다
-            Managers.Game.inven_itemInfo[key_index].tile = item.tile;
-        Managers.Game.inven_itemInfo[key_index].keyType = Define.KeyType.Exist;
+        Managers.Inven.inven_itemInfo[key_index].count = count;
+        Managers.Inven.inven_itemInfo[key_index].icon = item.itemIcon;
+        if (Managers.Inven.inven_itemInfo[key_index].itemType == Define.ItemType.Building)   //건설 아이템은 타일을 따로 가지고 있는다
+            Managers.Inven.inven_itemInfo[key_index].tile = item.tile;
+        Managers.Inven.inven_itemInfo[key_index].keyType = Define.KeyType.Exist;
         SetKeys(key_index);
     }
 
